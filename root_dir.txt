@@ -1,0 +1,9 @@
+.
+├── README.md
+├── backend
+│   └── config
+├── frontend
+├── requirements.txt
+└── root_dir.txt
+
+4 directories, 3 files
