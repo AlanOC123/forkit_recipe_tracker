@@ -1,12 +1,73 @@
 .
 ├── backend_dir.txt
-└── config
-    ├── config
-    │   ├── __init__.py
-    │   ├── asgi.py
-    │   ├── settings.py
-    │   ├── urls.py
-    │   └── wsgi.py
-    └── manage.py
+├── config
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── settings.cpython-313.pyc
+│   │   ├── urls.cpython-313.pyc
+│   │   └── wsgi.cpython-313.pyc
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── shared.py
+│   ├── urls.py
+│   └── wsgi.py
+├── interactions
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── admin.cpython-313.pyc
+│   │   ├── apps.cpython-313.pyc
+│   │   └── models.cpython-313.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       └── __init__.cpython-313.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── signals.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── manage.py
+├── media
+├── profiles
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── admin.cpython-313.pyc
+│   │   ├── apps.cpython-313.pyc
+│   │   └── models.cpython-313.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       └── __init__.cpython-313.pyc
+│   ├── models.py
+│   ├── serializers.py
+│   ├── signals.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── recipes
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── admin.cpython-313.pyc
+│   │   ├── apps.cpython-313.pyc
+│   │   └── models.cpython-313.pyc
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   │       └── __init__.cpython-313.pyc
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+└── static
 
-3 directories, 7 files
+17 directories, 54 files
