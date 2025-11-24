@@ -1,9 +1,11 @@
 .
+├── .git
+├── .gitignore
+├── .venv
 ├── README.md
 ├── backend
-│   └── config
 ├── frontend
 ├── requirements.txt
 └── root_dir.txt
 
-4 directories, 3 files
+5 directories, 4 files

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from config.shared import AllergyChoices
+from config.shared import AllergyChoices, LevelChoices
 
 class UserProfile(models.Model):
     bio = models.TextField(
@@ -17,6 +17,8 @@ class UserProfile(models.Model):
         null=True,
         help_text="Your profile picture"
     )
+
+    level = models.CharField(max_length=10, choices=LevelChoices.choices, default=LevelChoices.BEGINNER)
 
     location = models.CharField(
         verbose_name="Location",
