@@ -1,7 +1,8 @@
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from shared.models import Level, Cuisine, Technique, Tag, Allergen
 from profiles.models import UserProfile
+from typing import TYPE_CHECKING
 
 class DifficultyChoices(models.TextChoices):
     EASY = "easy", "Easy"
@@ -102,6 +103,9 @@ class Recipe(models.Model):
         auto_now=True
     )
 
+    if TYPE_CHECKING:
+        forks: QuerySet['Recipe'] 
+
     @property
     def fork_count(self):
         return self.forks.count()
@@ -110,6 +114,7 @@ class Recipe(models.Model):
         verbose_name = "Recipe"
         verbose_name_plural = "Recipes"
         ordering = ["-created_at"]
+        unique_together = ('author', 'title')
     
     def __str__(self):
         return self.title
