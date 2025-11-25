@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Allergen, Cuisine, Technique, Tag, Level
 
-# Register your models here.
+admin.site.register(Allergen)
+admin.site.register(Cuisine)
+admin.site.register(Technique)
+admin.site.register(Level)
+admin.site.register(Tag)
