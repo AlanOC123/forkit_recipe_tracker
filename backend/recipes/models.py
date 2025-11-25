@@ -79,7 +79,8 @@ class Recipe(models.Model):
         to='self',
         on_delete=models.SET_NULL,
         related_name="forks",
-        null=True
+        null=True,
+        blank=True
     )
 
     servings = models.PositiveIntegerField(
