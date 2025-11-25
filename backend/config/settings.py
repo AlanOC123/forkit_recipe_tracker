@@ -25,7 +25,7 @@ INSTALLED_APPS = [
 
     # Core Apps
     'profiles.apps.ProfilesConfig',
-    'interactions.apps.InteractionsConfig',
+    'shared.apps.SharedConfig',
     'recipes.apps.RecipesConfig',
 ]
 

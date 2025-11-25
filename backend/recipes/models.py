@@ -1,204 +1,365 @@
 from django.db import models
-from django.contrib.auth.models import User
-from config.shared import LevelChoices, AllergyChoices, CourseChoices, CuisineChoices
+from django.db.models import Q
+from shared.models import Level, Cuisine, Technique, Tag, Allergen
+from profiles.models import UserProfile
 
-class Tag(models.Model):
-    class CategoryChoices(models.TextChoices):
-        DIETARY = 'dietary', 'Dietary'
-        METHOD = 'method', 'Method'
-        OCCASION = 'occasion', 'Occasion' 
-
-    name = models.CharField(max_length=50, unique=True)
-    category = models.CharField(max_length=20, choices=CategoryChoices.choices)
-    slug = models.SlugField(unique=True)
-
-    class Meta:
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
-        ordering = ['category', 'name']
-    
-    def __str__(self):
-        return f"{self.name} ({self.get_category_display()})"
+class DifficultyChoices(models.TextChoices):
+    EASY = "easy", "Easy"
+    MEDIUM = "medium", "Medium"
+    HARD = "hard", "Hard"
+    VERY_HARD = "very_hard", "Very Hard"
 
 class Recipe(models.Model):
     class StatusChoices(models.TextChoices):
         DRAFT = "draft", "Draft"
         PUBLIC = "public", "Public"
         PRIVATE = "private", "Private"
-
-    allergens = models.JSONField(
-        default=list,
-        blank=True,
-        help_text="List of allergens (e.g., ['gluten', 'dairy', 'eggs'])"
-    )
+    
+    class CourseChoices(models.TextChoices):
+        BREAKFAST = "breakfast", "Breakfast"
+        BRUNCH = "brunch", "Brunch"
+        LUNCH = "lunch", "Lunch"
+        APPETISER = "appetiser", "Appetiser"
+        STARTER = "starter", "Starter"
+        MAIN = "main", "Main"
+        DESSERT = "dessert", "Dessert"
+        SNACK = "snack", "Snack"
 
     author = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='recipes'
+        verbose_name="Recipe Author",
+        to=UserProfile,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="recipes"
     )
 
-    parent_recipe = models.ForeignKey(
-        'self', null=True, 
-        blank=True, 
-        on_delete=models.SET_NULL, 
-        related_name='forks'
-    )
-    
-    name = models.CharField(
-        max_length=200
+    title = models.CharField(
+        verbose_name="Recipe Title",
+        max_length=100
     )
 
-    description = models.TextField()
-
-    image = models.ImageField(
-        upload_to='recipe_images/', 
-        blank=True, 
+    description = models.TextField(
+        verbose_name="Recipe Description",
+        blank=True,
         null=True
     )
-    
+
     status = models.CharField(
-        max_length=10, 
-        choices=StatusChoices.choices, 
+        verbose_name="Recipe Status",
+        max_length=15,
+        choices=StatusChoices.choices,
         default=StatusChoices.DRAFT
     )
 
-    servings = models.PositiveIntegerField()
-    prep_time = models.PositiveIntegerField()
-    cook_time = models.PositiveIntegerField()
-
-    level = models.CharField(
-        max_length=20, 
-        choices=LevelChoices.choices, 
-        default=LevelChoices.BEGINNER
-    )
-
-    cuisine = models.CharField(
-        choices=CuisineChoices.choices,
-        max_length=50,
-    )
-
     course = models.CharField(
-        choices=CourseChoices.choices,
-        max_length=50
+        verbose_name="Recipe Course",
+        max_length=20,
+        choices=CourseChoices.choices
     )
-    
-    tags = models.ManyToManyField(Tag, related_name='recipes', blank=True)
-    fork_count = models.IntegerField(default=0)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    difficulty = models.CharField(
+        verbose_name="Recipe Difficulty",
+        max_length=15,
+        choices=DifficultyChoices.choices,
+        default=DifficultyChoices.MEDIUM
+    )
+
+    prep_time = models.PositiveIntegerField(
+        verbose_name="Recipe Preparation Time",
+        default=10,
+    )
+
+    cook_time = models.PositiveIntegerField(
+        verbose_name="Recipe Cooking Time",
+        default=30,
+    )
+
+    parent_recipe = models.ForeignKey(
+        to='self',
+        on_delete=models.SET_NULL,
+        related_name="forks",
+        null=True
+    )
+
+    servings = models.PositiveIntegerField(
+        verbose_name="Recipe Servings",
+        default=1
+    )
+
+    tags = models.ManyToManyField(
+        verbose_name="Recipe Tags",
+        to=Tag,
+        related_name="recipes"
+    )
+
+    created_at = models.DateTimeField(
+        verbose_name="Created At", 
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        verbose_name="Updated At", 
+        auto_now=True
+    )
+
+    @property
+    def fork_count(self):
+        return self.forks.count()
 
     class Meta:
         verbose_name = "Recipe"
         verbose_name_plural = "Recipes"
-        ordering = ['-created_at']
-        indexes = [
-            models.Index(fields=['status', '-created_at']),
-            models.Index(fields=['author', '-created_at']),
-        ]
+        ordering = ["-created_at"]
     
     def __str__(self):
-        return f"{self.name} by {self.author.username}"
-    
-    @property
-    def total_time(self):
-        """Total time in minutes"""
-        return self.prep_time + self.cook_time
-    
-    @property
-    def average_rating(self):
-        """Average rating from reviews"""
-        reviews = self.reviews.all()
-        if reviews.exists():
-            return reviews.aggregate(models.Avg('rating'))['rating__avg']
-        return None
-    
-    @property
-    def review_count(self):
-        """Number of reviews"""
-        return self.reviews.count()
-
-from django.db import models
-from django.core.validators import MinValueValidator
-
-
-class Ingredient(models.Model):
-    """Individual ingredient for a recipe"""
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='ingredients',
-        help_text="Recipe this ingredient belongs to"
-    )
-    name = models.CharField(
-        max_length=200,
-        help_text="Ingredient name (e.g., 'all-purpose flour')"
-    )
-    quantity = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        help_text="Quantity amount (e.g., 2.5)"
-    )
-    unit = models.CharField(
-        max_length=50,
-        help_text="Unit of measurement (e.g., 'cups', 'tbsp', 'grams')"
-    )
-    order = models.PositiveIntegerField(
-        help_text="Display order (1, 2, 3...)"
-    )
-    optional = models.BooleanField(
-        default=False,
-        help_text="Is this ingredient optional?"
-    )
-    notes = models.CharField(
-        max_length=200,
-        blank=True,
-        help_text="Additional notes (e.g., 'plus extra for dusting')"
-    )
-    
-    class Meta:
-        verbose_name = "Ingredient"
-        verbose_name_plural = "Ingredients"
-        ordering = ['order']  # Display in order
-        unique_together = [['recipe', 'order']]  # No duplicate orders per recipe
-    
-    def __str__(self):
-        optional_text = " (optional)" if self.optional else ""
-        notes_text = f" - {self.notes}" if self.notes else ""
-        return f"{self.quantity} {self.unit} {self.name}{optional_text}{notes_text}"
-
+        return self.title
 
 class Step(models.Model):
-    """Instruction step for a recipe"""
     recipe = models.ForeignKey(
-        Recipe,
+        verbose_name="Related Recipe",
+        to=Recipe,
         on_delete=models.CASCADE,
-        related_name='steps',
-        help_text="Recipe this step belongs to"
+        related_name="steps"
     )
+
     order = models.PositiveIntegerField(
-        help_text="Step number (1, 2, 3...)"
+        verbose_name="Step Order",
+        default=1
     )
+
     instruction = models.TextField(
-        help_text="Detailed instruction for this step"
+        verbose_name="Step Instruction"
     )
+
     duration = models.PositiveIntegerField(
-        null=True,
+        verbose_name="Step Duration",
         blank=True,
-        validators=[MinValueValidator(1)],
-        help_text="Time for this step in minutes (optional)"
+        null=True
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    
+
+    is_timed = models.BooleanField(
+        verbose_name="Timed Step?",
+        default=False
+    )
+
     class Meta:
         verbose_name = "Step"
         verbose_name_plural = "Steps"
-        ordering = ['order']  # Display in order
-        unique_together = [['recipe', 'order']]  # No duplicate orders per recipe
+        ordering = ["order"]
+        unique_together = ("recipe", "order")
+        
+        constraints = [
+            models.CheckConstraint(
+                check=Q(is_timed=False) | Q(duration__isnull=False),
+                name="timed_steps_must_have_duration_set and vice versa"
+            )
+        ]
     
     def __str__(self):
-        duration_text = f" ({self.duration} min)" if self.duration else ""
-        instruction_preview = self.instruction[:50] + "..." if len(self.instruction) > 50 else self.instruction
-        return f"Step {self.order}{duration_text}: {instruction_preview}"
+        return f"({self.recipe.title}) - Step {(self.order if self.order else "X")}"
+
+class Ingredient(models.Model):
+    recipe = models.ForeignKey(
+        verbose_name="Related Recipe",
+        to=Recipe,
+        on_delete=models.CASCADE,
+        related_name="ingredients"
+    )
+
+    order = models.PositiveIntegerField(
+        verbose_name="Ingredient Order",
+        default=1
+    )
+
+    name = models.CharField(
+        verbose_name="Ingredient Name",
+        max_length=100
+    )
+
+    quantity = models.DecimalField(
+        verbose_name="Ingredient Quantity",
+        blank=True,
+        null=True,
+        max_digits=6,
+        decimal_places=2,
+    )
+
+    unit = models.CharField(
+        verbose_name="Ingredient Unit",
+        blank=True,
+        null=True,
+        max_length=50
+    )
+
+    is_optional = models.BooleanField(
+        verbose_name="Optional Ingredient?",
+        default=False
+    )
+
+    notes = models.TextField(
+        verbose_name="Ingredient Notes",
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = "Ingredient"
+        verbose_name_plural = "Ingredients"
+        ordering = ["order"]
+        unique_together = ("recipe", "order")
+    
+    def __str__(self):
+        return f"({self.recipe.title}) - ({self.name})"
+
+class RecipeTechnique(models.Model):
+    recipe = models.ForeignKey(
+        verbose_name="Related Recipe",
+        to=Recipe,
+        on_delete=models.CASCADE,
+        related_name="techniques"
+    )
+
+    technique = models.ForeignKey(
+        verbose_name="Related Technique",
+        to=Technique,
+        on_delete=models.PROTECT,
+        related_name="recipes_technique_used_in"
+    )
+
+    level = models.ForeignKey(
+        verbose_name="Related Level",
+        to=Level,
+        on_delete=models.PROTECT,
+        related_name="recipe_technique_at_this_level"
+    )
+
+    class Meta:
+        verbose_name = "Recipe Technique"
+        verbose_name_plural = "Recipe Techniques"
+        ordering = ["level__tier"]
+        unique_together = ("recipe", "technique")
+    
+    def __str__(self) -> str:
+        return f"({self.recipe.title}) - ({self.level.name}) - ({self.technique.name})"
+
+class RecipeCuisine(models.Model):
+    recipe = models.ForeignKey(
+        verbose_name="Related Recipe",
+        to=Recipe,
+        on_delete=models.CASCADE,
+        related_name="cuisines"
+    )
+
+    cuisine = models.ForeignKey(
+        verbose_name="Related Cuisine",
+        to=Cuisine,
+        on_delete=models.PROTECT,
+        related_name="recipes"
+    )
+
+    level = models.ForeignKey(
+        verbose_name="Related Level",
+        to=Level,
+        on_delete=models.PROTECT,
+        related_name="recipe_cuisines_at_this_level"
+    )
+
+    class Meta:
+        verbose_name = "Recipe Cuisine"
+        verbose_name_plural = "Recipe Cuisines"
+        ordering = ["level__tier"]
+        unique_together = ("recipe", "cuisine")
+    
+    def __str__(self) -> str:
+        return f"({self.recipe.title}) - ({self.level.name}) - ({self.cuisine.name})"
+
+class RecipeAllergen(models.Model):
+    class AmountChoices(models.TextChoices):
+        TRACE = "trace", "Trace"
+        LOW = "low", "Low"
+        MEDIUM = "medium", "Medium"
+        HIGH = "high", "High"
+    
+    recipe = models.ForeignKey(
+        to=Recipe,
+        on_delete=models.CASCADE,
+        related_name="allergens"
+    )
+
+    allergen = models.ForeignKey(
+        verbose_name="Recipe Allergen",
+        to=Allergen,
+        on_delete=models.PROTECT,
+        related_name="recipes"
+    )
+    
+    amount = models.CharField(
+        verbose_name="Recipe Allergy Amount",
+        max_length=20,
+        choices=AmountChoices.choices
+    )
+
+    notes = models.TextField(
+        verbose_name="Recipe Allergy Notes",
+        null=True,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        verbose_name="Created At",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Recipe Allergen"
+        verbose_name_plural = "Recipe Allergens"
+        ordering = ["amount"]
+        unique_together = ("recipe", "allergen")
+    
+    def __str__(self) -> str:
+        return f"({self.recipe.title}) - ({self.amount}) - ({self.allergen.name})"
+
+class RecipeCompletion(models.Model):
+    user_profile = models.ForeignKey(
+        verbose_name="User Completed",
+        to=UserProfile,
+        on_delete=models.CASCADE,
+        related_name="completions"
+    )
+
+    recipe = models.ForeignKey(
+        verbose_name="Recipe Completed",
+        to=Recipe,
+        on_delete=models.CASCADE,
+        related_name="completions"
+    )
+
+    notes = models.TextField(
+        verbose_name="Completion Notes",
+        null=True,
+        blank=True
+    )
+
+    time_taken = models.PositiveIntegerField(
+        verbose_name="Time Taken"
+    )
+
+    steps_skipped = models.PositiveIntegerField(
+        verbose_name="Steps Skipped",
+        blank=True,
+        null=True,
+        default=0
+    )
+
+    completed_at = models.DateTimeField(
+        verbose_name="Completed At",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Completion Record"
+        verbose_name_plural = "Completion Records"
+        ordering = ["-completed_at"]
+    
+    def __str__(self) -> str:
+        return f"({self.user_profile.user.username}) - (COMPLETED) - ({self.recipe.title})"
