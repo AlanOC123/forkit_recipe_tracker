@@ -149,6 +149,7 @@ class Tag(models.Model):
         DIETARY = "dietary", "Dietary"
         METHOD = "method", "Method"
         OCCASION = "occasion", "Occasion"
+        CUSTOM = "custom", "Custom"
 
     name = models.CharField(
         verbose_name="Tag Name", 
@@ -166,6 +167,15 @@ class Tag(models.Model):
         verbose_name="Created At", 
         auto_now_add=True
     )
+
+    created_by = models.ForeignKey(
+        to='profiles.UserProfile',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+    is_system = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Tag"
