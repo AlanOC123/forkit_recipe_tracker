@@ -9,7 +9,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import UserProfile, UserCuisine, UserAllergy, UserTechnique
 from .serializers import (
-    UserProfileSerializer, UserAllergyListSerializer, UserCuisineListSerializer, UserTechniqueListSerializer
+    UserProfileSerializer, UserAllergyListSerializer, UserCuisineListSerializer, UserTechniqueListSerializer, UserAllergyDetailSerializer, UserCuisineDetailSerializer, UserTechniqueDetailSerializer
 )
 
 class UserProfileViewSet(
@@ -30,25 +30,40 @@ class UserProfileViewSet(
             serializer.save()
 
 class UserAllergyViewSet(viewsets.ModelViewSet):
-    serializer_class = UserAllergyListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return UserAllergy.objects.filter(user_profile=self.request.user.profile)
     
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return UserAllergyListSerializer
+        else:
+            return UserAllergyDetailSerializer
+    
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user.profile)
     
 class UserCuisineViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = UserCuisineListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return UserCuisine.objects.filter(user_profile=self.request.user.profile)
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return UserCuisineListSerializer
+        else:
+            return UserCuisineDetailSerializer
 
 class UserTechniqueViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = UserTechniqueListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return UserTechnique.objects.filter(user_profile=self.request.user.profile)
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return UserTechniqueListSerializer
+        else:
+            return UserTechniqueDetailSerializer

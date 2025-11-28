@@ -60,6 +60,3 @@ def award_xp_on_completion(sender, instance: RecipeCompletion, created: bool, **
             user_technique.level = new_level
 
         user_technique.save()
-
-
-
