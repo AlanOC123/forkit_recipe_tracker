@@ -9,8 +9,12 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import UserProfile, UserCuisine, UserAllergy, UserTechnique
 from .serializers import (
-    UserProfileSerializer, UserAllergyListSerializer, UserCuisineListSerializer, UserTechniqueListSerializer, UserAllergyDetailSerializer, UserCuisineDetailSerializer, UserTechniqueDetailSerializer
+    UserProfileSerializer, UserAllergyListSerializer, UserCuisineListSerializer, UserTechniqueListSerializer, UserAllergyDetailSerializer, UserCuisineDetailSerializer, UserTechniqueDetailSerializer, CustomTokenObtainPairSerializer
 )
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 class UserProfileViewSet(
     ListModelMixin,

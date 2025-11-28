@@ -3,6 +3,24 @@ from .models import UserProfile, UserAllergy, UserTechnique, UserCuisine
 from shared.serializers import (
     AllergenSerializer, TechniqueSerializer, LevelSerializer, CuisineSerializer
 )
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['username'] = user.username
+        token['email'] = user.email
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        data['username'] = self.user.username
+        data['email'] = self.user.email
+        data['user_id'] = self.user.id
+
+        return data
 
 class UserCuisineListSerializer(serializers.ModelSerializer):
     cuisine = serializers.CharField(source='cuisine.name', read_only=True)
