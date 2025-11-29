@@ -32,6 +32,9 @@ INSTALLED_APPS = [
 # *** Server ***
 HOST_ADDRESSES = config('ALLOWED_HOSTS')
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+FRONTEND_URL = 'http://localhost:3000'
+DEFAULT_FROM_EMAIL = 'noreply@forkit.com'
 
 if isinstance(HOST_ADDRESSES, str):
     ALLOWED_HOSTS = HOST_ADDRESSES.strip().split(',')
@@ -55,7 +58,10 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
-    ]
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        'anon': '5/hour'
+    }
 }
 
 CORS_ALLOWED_ORIGINS = [

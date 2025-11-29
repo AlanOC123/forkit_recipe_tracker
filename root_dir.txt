@@ -1,11 +1,25 @@
 .
-├── .git
-├── .gitignore
-├── .venv
 ├── README.md
 ├── backend
+│   ├── backend_dir.txt
+│   ├── config
+│   ├── manage.py
+│   ├── media
+│   ├── profiles
+│   ├── recipes
+│   ├── shared
+│   └── static
 ├── frontend
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   └── vite.config.js
 ├── requirements.txt
 └── root_dir.txt
 
-5 directories, 4 files
+12 directories, 11 files
