@@ -8,7 +8,8 @@ from profiles.views import (
     CustomTokenObtainPairView,
     UserRegistrationView,
     PasswordRequestView,
-    PasswordConfirmView
+    PasswordConfirmView,
+    CurrentUserView
 )
 
 urlpatterns = [
@@ -27,6 +28,9 @@ urlpatterns = [
 
     # Register
     path('api/register/', UserRegistrationView.as_view(), name='user_register'),
+
+    # Current User
+    path('api/me/', CurrentUserView.as_view(), name="current-user"),
 
     # Password Reset Endpoints
     path('api/password-reset/', PasswordRequestView.as_view(), name="password_reset"),
