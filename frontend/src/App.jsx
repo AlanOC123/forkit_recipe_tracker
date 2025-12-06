@@ -1,17 +1,13 @@
-import { useAuth } from './context/AuthContext';
-import { DefaultButton, ToggleButton } from './components/Button/Button';
+import { Route, Routes } from 'react-router-dom';
+import { Home, SignUp, Login } from './Registry';
 
 function App() {
-
   return (
-      <>
-          <DefaultButton variant={"elevated"}>Login</DefaultButton>
-          <ToggleButton variant={"elevated"}>Logout</ToggleButton>
-          <DefaultButton variant={"filled"}>Do Something</DefaultButton>
-          <ToggleButton variant={"filled"}>Do Something Else</ToggleButton>
-          <DefaultButton variant={"tonal"}>Do Something</DefaultButton>
-          <ToggleButton variant={"tonal"}>Do Something Else</ToggleButton>
-      </>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/sign-up' element={<SignUp />}/>
+      </Routes>
   );
 }
 

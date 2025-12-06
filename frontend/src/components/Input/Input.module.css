@@ -1,0 +1,102 @@
+.text-field {
+    display: grid;
+    width: 100%;
+    max-width: 30ch;
+    gap: var(--space-1);
+    padding: var(--space-4);
+
+    &:focus-within {
+        .text-input {
+            outline: 1px solid var(--primary-clr);
+        }
+
+        .input-label {
+            color: color-mix(in srgb, var(--primary-clr), black 20%);
+        }
+    }
+
+    & .text-input {
+        border: 0;
+        padding: 0.5em;
+        border-radius: 999px;
+        background-color: var(--neutral-200);
+        color: var(--neutral-800);
+        transition: all 300ms ease;
+        outline: 2px solid transparent;
+
+        &:hover {
+            background-color: var(--neutral-300);
+        }
+    }
+
+    & .input-label {
+        color: var(--neutral-600);
+        font-size: var(--fs-sm);
+        font-weight: 500;
+    }
+}
+
+.password-field {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    width: 100%;
+    max-width: 30ch;
+
+    transition: all 300ms ease;
+
+    &:focus-within {
+        .text-input {
+            outline: 1px solid var(--primary-clr);
+        }
+
+        .input-label {
+            color: color-mix(in srgb, var(--primary-clr), black 20%);
+        }
+    }
+
+    & .password-input {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        transition: all 300ms ease;
+        outline: 2px solid transparent;
+        gap: var(--space-1);
+    }
+
+    & .text-input {
+        background-color: var(--neutral-200);
+        height: 100%;
+        border: 0;
+        outline: 0;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+        border-top-right-radius: 24px;
+        border-bottom-right-radius: 24px;
+        flex: 1;
+        transition: all 300ms ease;
+        padding-inline: 0.5em;
+
+        &:hover {
+            background-color: var(--neutral-300);
+        }
+    }
+
+    & .show-password {
+        background-color: var(--neutral-200) !important;
+        border-top-left-radius: 24px !important;
+        border-bottom-left-radius: 24px!important;
+        border-top-right-radius: 50px !important;
+        border-bottom-right-radius: 50px !important;
+
+        &:hover {
+            background-color: var(--neutral-400) !important;
+        }
+    }
+
+    & .input-label {
+        color: var(--neutral-600);
+        font-size: var(--fs-sm);
+        font-weight: 500;
+    }
+}

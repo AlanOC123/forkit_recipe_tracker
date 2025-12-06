@@ -1,51 +1,99 @@
-import { useState } from 'react';
-import styles from './Button.module.css';
+import { useState } from "react";
+import { StandardIcon, ToggleIcon } from "../Icon/Icon";
+import styles from "./Button.module.css";
 
-export function DefaultButton({ 
-    children, 
-    variant="filled", 
-    className, 
-    icon, 
-    ...props 
+export function Button({
+    children,
+    kind,
+    variant = "standard",
+    icon,
+    size = "sm",
+    href=null,
+    type="button",
+    classNames=[],
+    ...props
 }) {
-    const hasText = children !== undefined && children !== null;
-
-    const classNames = [
+    const className = [
         styles.btn,
+        styles[kind],
         styles[variant],
-        !hasText ? styles.iconOnly : false,
-        className
-    ].filter(Boolean).join(' ');
+        size !== undefined || size !== null ? styles[size] : false,
+        styles.standard,
+        ...classNames
+    ]
+        .filter(Boolean)
+        .join(" ");
 
-    return (
-        <button className={ classNames } { ...props }>
-            {icon && <span className={styles.iconWrapper}>{icon}</span>}
-            {hasText && <span className={styles.label}>{children}</span>}
+    const el = href ? (
+        <a href={href} className={className} {...props}>
+            {icon && <StandardIcon>{icon}</StandardIcon>}
+            {children && <span>{children}</span>}
+        </a>
+    ) : (
+        <button type={type} className={className} {...props}>
+            {icon && <StandardIcon>{icon}</StandardIcon>}
+            {children && <span>{children}</span>}
         </button>
-    )
+    );
+
+    return el;
 }
 
-export function ToggleButton({ children, variant, className, icon, onClick, initialState=false, ...props }) {
-    const [isActive, setIsActive] = useState(initialState);
-    const hasText = children !== undefined && children !== null;
+export function ToggleButton({
+    children,
+    type,
+    icon,
+    size = "sm",
+    initialToggleState = false,
+    onClick,
+    classNames=[],
+    ...props
+}) {
+    const [isActive, setIsActive] = useState(initialToggleState);
+
+    const className = [
+        styles.btn,
+        styles[type],
+        styles.toggle,
+        size !== undefined || size !== null ? styles[size] : false,
+        isActive ? styles.active : styles.inactive,
+        styles.toggle,
+        ...classNames
+    ]
+        .filter(Boolean)
+        .join(" ");
 
     const handleClick = (e) => {
         setIsActive(!isActive);
         if (onClick) onClick(e);
     };
 
-    const classNames = [
-        styles.btn,
-        styles[variant],
-        !hasText ? styles.iconOnly : false,
-        isActive ? styles.active : false,
-        className,
-    ].filter(Boolean).join(" ");
-
     return (
-        <button aria-pressed={isActive} className={classNames} onClick={handleClick} {...props}>
-            {icon && <span className={styles.iconWrapper}>{icon}</span>}
-            {hasText && <span className={styles.label}>{children}</span>}
+        <button className={className} onClick={handleClick} {...props}>
+            {icon && <ToggleIcon isToggled={isActive}>{icon}</ToggleIcon>}
+            {children && <span>{children}</span>}
+        </button>
+    );
+}
+
+export function IconOnlyButton({
+    icon,
+    variant = "standard",
+    size = "sm",
+    kind,
+    classNames=[],
+    ...props
+}) {
+    const className = [
+        styles["icon-only"],
+        styles[kind],
+        styles[variant],
+        styles[size],
+        ...classNames
+    ].join(' ');
+    return (
+        <button className={className} {...props}>
+            <StandardIcon>{icon}</StandardIcon>
         </button>
     );
 }

@@ -1,0 +1,26 @@
+.icon {
+    background-color: transparent;
+    font-size: inherit;
+    display: inline-block;
+}
+
+.standard {
+    & :global(.material-symbols-outlined) {
+        font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
+        display: inline-block;
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+.toggle {
+    &.toggled :global(.material-symbols-outlined) {
+        font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
+        font-size: inherit;
+    }
+
+    &.untoggled :global(.material-symbols-outlined) {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        font-size: inherit;
+    }
+}
