@@ -1,0 +1,17 @@
+:root {
+    /* 1. CONFIGURATION (Edit these!) */
+    --vp-min: 23.4375rem; /* Unitless (approx 375px in rem) */
+    --vp-max: 80rem; /* Unitless (approx 1280px in rem) */
+
+    /* Base Sizes (in REM) */
+    --fs-min: 1;
+    --fs-max: 1.25;
+
+    /* Multipliers */
+    --mul-xs: 0.5;
+    --mul-sm: 0.75;
+    --mul-base: 1;
+    --mul-md: 1.5;
+    --mul-lg: 2;
+    --mul-xl: 3;
+}

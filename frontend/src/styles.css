@@ -1,0 +1,6 @@
+@import url('./styles/root.css');
+@import url('./styles/typography.css');
+@import url('./styles/spacing.css');
+@import url('./styles/theme.css');
+@import url('../node_modules//normalize.css/normalize.css');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');

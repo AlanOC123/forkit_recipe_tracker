@@ -1,25 +1,17 @@
-import './App.css'
 import { useAuth } from './context/AuthContext';
-import { Login } from './pages/Login'
+import { DefaultButton, ToggleButton } from './components/Button/Button';
 
 function App() {
-  const { user, isLoading, logoutUser } = useAuth();
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (user) {
-    return (
-        <>
-            <h1>Hello {user.username}!</h1>
-            <button onClick={() => logoutUser()}>Logout</button>
-        </>
-    );
-  }
 
   return (
-      <Login />
+      <>
+          <DefaultButton variant={"elevated"}>Login</DefaultButton>
+          <ToggleButton variant={"elevated"}>Logout</ToggleButton>
+          <DefaultButton variant={"filled"}>Do Something</DefaultButton>
+          <ToggleButton variant={"filled"}>Do Something Else</ToggleButton>
+          <DefaultButton variant={"tonal"}>Do Something</DefaultButton>
+          <ToggleButton variant={"tonal"}>Do Something Else</ToggleButton>
+      </>
   );
 }
 

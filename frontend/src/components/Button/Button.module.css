@@ -1,0 +1,141 @@
+@property --rotate-gradient {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@keyframes rotate-gradient {
+    to { --rotate-gradient: 360deg; }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    
+    font-family: inherit;
+    font-weight: 600;
+    font-size: var(--fs-base);
+    line-height: 1;
+    white-space: nowrap;
+    max-width: 65ch;
+
+    letter-spacing: 0.05em;
+    padding: 0.5em 0.75em;
+    margin: 1em;
+
+    cursor: pointer;
+    user-select: auto;
+    transition: all 300ms ease-in-out;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.iconWrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 1.125em;
+    height: 1.125em;
+
+    & svg {
+        width: 100%;
+        height: 100%;
+        fill: currentColor;
+    }
+}
+
+&.icon-only {
+    padding: 0;
+    width: 2.5rem;
+    aspect-ratio: 1;
+}
+
+.elevated {
+    border: 0;
+    background-color: color-mix(in srgb, var(--primary-clr), white 90%); 
+    border-radius: 999px;
+    box-shadow: 
+        color-mix(in srgb, var(--primary-clr), transparent 80%) 0px 2px 5px -1px, 
+        color-mix(in srgb, var(--primary-clr), transparent 75%) 0px 1px 3px -1px
+    ;
+    color: color-mix(in srgb, var(--primary-clr), black 40%);
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--primary-clr), white 80%);
+        box-shadow: 
+            color-mix(in srgb, var(--primary-clr), transparent 80%) 0px 13px 27px -5px, 
+            color-mix(in srgb, var(--primary-clr), transparent 75%) 0px 8px 16px -8px
+        ;
+        color: color-mix(in srgb, var(--primary-clr), black 30%);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        background-color: color-mix(in srgb, var(--primary-clr), black 10%);
+        transform: translateY(1px);
+        color: color-mix(in srgb, var(--primary-clr), white 70%);
+    }
+
+    &.active {
+        background-color: color-mix(in srgb, var(--primary-clr), white 20%); 
+        border-radius: 0.6em;
+        color: color-mix(in srgb, var(--primary-clr), white 70%);
+    }
+}
+
+.filled {
+    border: 0;
+    background-color: color-mix(in srgb, var(--primary-clr), black 10%); 
+    border-radius: 999px;
+    color: color-mix(in srgb, var(--primary-clr), white 90%);
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--primary-clr), white 20%);
+        color: color-mix(in srgb, var(--primary-clr), black 80%);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        background-color: color-mix(in srgb, var(--primary-clr), black 30%);
+        transform: translateY(1px);
+        color: color-mix(in srgb, var(--primary-clr), white 70%);
+    }
+
+    &.active {
+        background-color: color-mix(in srgb, var(--primary-clr), black 10%);
+        border-radius: 0.75em;
+        color: color-mix(in srgb, var(--primary-clr), white 90%);
+    }
+}
+
+.tonal {
+    border: 0;
+    background-color: color-mix(in srgb, var(--primary-clr), white 70%); 
+    border-radius: 999px;
+    color: color-mix(in srgb, var(--primary-clr), black 70%);
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--primary-clr), white 20%);
+        color: color-mix(in srgb, var(--primary-clr), black 80%);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        background-color: color-mix(in srgb, var(--primary-clr), black 30%);
+        transform: translateY(1px);
+        color: color-mix(in srgb, var(--primary-clr), white 70%);
+    }
+
+    &.active {
+        background-color: color-mix(in srgb, var(--primary-clr), black 10%);
+        border-radius: 0.75em;
+        color: color-mix(in srgb, var(--primary-clr), white 90%);
+    }
+}
