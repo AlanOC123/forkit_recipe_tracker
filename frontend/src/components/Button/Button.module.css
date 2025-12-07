@@ -16,7 +16,8 @@
     font-weight: 600;
     line-height: 1;
     white-space: nowrap;
-    max-width: 65ch;
+    max-width: 20ch;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     letter-spacing: 0.05em;

@@ -1,0 +1,8 @@
+.login {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-content: end;
+    justify-content: center;
+    height: 100dvh;
+    position: relative;
+}

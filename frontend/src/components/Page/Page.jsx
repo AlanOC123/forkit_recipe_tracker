@@ -1,10 +1,18 @@
-import styles from './Page.module.css'
+import styles from "./Page.module.css";
+import { cn } from "../../utils/classNames";
 
-export function Page({ children, id, classNames = [], ...props }) {
-    const className = [
-        styles.page,
-        ...classNames
-    ]
-
-    return <div className={className} id={id} {...props}>{children}</div>;
+function PageHeader({ children }) {
+    return <h1 className={styles.pageHeader}>{children}</h1>;
 }
+
+function Page({ children, id, elementClass, ...props }) {
+    return (
+        <main className={cn(styles.page, elementClass)} id={id} {...props}>
+            {children}
+        </main>
+    );
+}
+
+Page.Header = PageHeader;
+
+export { Page };

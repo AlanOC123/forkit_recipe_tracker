@@ -1,0 +1,8 @@
+.section {
+    display: grid;
+    gap: var(--space-8);
+}
+
+.section-header {
+    
+}

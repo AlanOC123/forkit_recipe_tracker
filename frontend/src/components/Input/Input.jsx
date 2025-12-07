@@ -1,20 +1,20 @@
 import styles from "./Input.module.css";
 import { IconOnlyButton } from "../Button/Button";
 import { useRef, useState } from "react";
+import { cn } from "../../utils/classNames";
 
 export function TextInputGroup({
     placeholder,
-    inputValue = '',
+    inputValue = "",
     onChange,
     labelText,
+    error = null,
     ...props
 }) {
     return (
-        <div className={styles['text-field']} {...props}>
+        <div className={styles["text-field"]} {...props}>
             {labelText && (
-                <label className={styles["input-label"]}>
-                    {labelText}
-                </label>
+                <label className={styles["input-label"]}>{labelText}</label>
             )}
             <input
                 className={styles["text-input"]}
@@ -23,6 +23,7 @@ export function TextInputGroup({
                 value={inputValue}
                 onChange={onChange}
             />
+            {error && <span className={styles.error}>{error}</span>}
         </div>
     );
 }
@@ -43,11 +44,9 @@ export function PasswordInputGroup({
     };
 
     return (
-        <div className={styles["password-field"]} {...props}>
+        <div className={styles["text-field"]} {...props}>
             {labelText && (
-                <label className={styles["input-label"]}>
-                    {labelText}
-                </label>
+                <label className={styles["input-label"]}>{labelText}</label>
             )}
             <div className={styles["password-input"]}>
                 <input
@@ -62,7 +61,7 @@ export function PasswordInputGroup({
                     kind={"text"}
                     icon={isShown ? "visibility_off" : "visibility"}
                     onClick={handleClick}
-                    classNames={[styles["show-password"]]}
+                    elementClass={cn(styles["show-password"])}
                 />
             </div>
         </div>
