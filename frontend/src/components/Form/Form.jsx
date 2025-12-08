@@ -1,7 +1,7 @@
 export function Form({ onSubmit, children, ...props }) {
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, ...args) => {
         e.preventDefault();
-        if (onSubmit) onSubmit(e)
+        if (onSubmit) onSubmit(e, ...args)
     }
 
     return (

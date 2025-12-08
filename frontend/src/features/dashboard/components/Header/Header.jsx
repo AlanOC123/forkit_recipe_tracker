@@ -1,9 +1,11 @@
 import { useAuth } from "../../../../context/AuthContext";
 import { Button } from "../../../../components/Button/Button";
+import { useNavigate } from "react-router-dom";
 import styles from './Header.module.css';
 
 export function Header() {
     const { user, logoutUser } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <header className={styles.header}>

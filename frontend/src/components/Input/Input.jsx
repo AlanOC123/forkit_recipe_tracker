@@ -1,6 +1,6 @@
 import styles from "./Input.module.css";
-import { IconOnlyButton } from "../Button/Button";
-import { useRef, useState } from "react";
+import { IconOnlyButton, IconOnlyToggleButton } from "../Button/Button";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../utils/classNames";
 
 export function TextInputGroup({
@@ -23,7 +23,7 @@ export function TextInputGroup({
                 value={inputValue}
                 onChange={onChange}
             />
-            {error && <span className={styles.error}>{error}</span>}
+            {error && <span className={cn(styles.inputMsg, styles.errorMsg)}>{error}</span>}
         </div>
     );
 }
@@ -33,12 +33,14 @@ export function PasswordInputGroup({
     inputValue = "",
     onChange,
     labelText,
+    error,
     ...props
 }) {
     const [isShown, setIsShown] = useState(false);
     const inputRef = useRef(null);
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
         setIsShown(() => !isShown);
         inputRef.current.focus();
     };
@@ -57,13 +59,56 @@ export function PasswordInputGroup({
                     onChange={onChange}
                     ref={inputRef}
                 />
-                <IconOnlyButton
+                <IconOnlyToggleButton
                     kind={"text"}
-                    icon={isShown ? "visibility_off" : "visibility"}
+                    icon={isShown ? "visibility" : "visibility_off"}
                     onClick={handleClick}
                     elementClass={cn(styles["show-password"])}
                 />
             </div>
+            {error && (
+                <span className={cn(styles.inputMsg, styles.errorMsg)}>
+                    {error}
+                </span>
+            )}
+        </div>
+    );
+}
+
+export function EmailInputGroup({
+    placeholder,
+    inputValue = "",
+    labelText,
+    onChange,
+    error: externalError,
+    ...props
+}) {
+    
+    const validationError = useMemo(() => {
+        if (!inputValue || inputValue.length < 5) return null;
+        if (!inputValue.includes("@")) return "Invalid email. Must include an @ symbol."
+        return null
+    }, [inputValue])
+
+    const displayError = externalError || validationError;
+
+    return (
+        <div className={styles["text-field"]} {...props}>
+            {labelText && (
+                <label className={styles["input-label"]}>{labelText}</label>
+            )}
+            <input
+                type="email"
+                placeholder={placeholder}
+                value={inputValue}
+                onChange={onChange}
+                className={styles["text-input"]}
+            />
+            {displayError && (
+                <span className={cn(styles.inputMsg, (externalError ? styles.errorMsg : styles.warningMsg))}>
+                    {displayError}
+                </span>
+            )}
         </div>
     );
 }

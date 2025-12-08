@@ -10,6 +10,20 @@ class UserProfile(models.Model):
         related_name="profile"
     )
 
+    first_name = models.CharField(
+        verbose_name="First Name",
+        max_length=50,
+        default="",
+        blank=True
+    )
+
+    last_name = models.CharField(
+        verbose_name="Last Name",
+        max_length=50,
+        default="",
+        blank=True
+    )
+
     bio = models.TextField(
         verbose_name="User Biography",
         null=True,

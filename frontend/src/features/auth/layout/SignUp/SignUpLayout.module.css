@@ -1,0 +1,29 @@
+.signUp {
+    grid-template-rows: 25dvh auto;
+    overflow-y: scroll;
+}
+
+.signUpFormBody {
+    grid-template-columns: repeat(auto-fill, minmax(25ch, 1fr));
+    overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+    .signUp {
+        grid-template-rows: 1fr;
+    }
+
+    .signUpFormBody {
+        grid-template-columns: repeat(auto-fill, minmax(25ch, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .signUp {
+        grid-template-rows: 1fr;
+    }
+
+    .signUpFormBody {
+        grid-template-columns: repeat(auto-fill, minmax(30ch, 1fr));
+    }
+}

@@ -1,8 +1,21 @@
 .login {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    align-content: end;
-    justify-content: center;
     height: 100dvh;
-    position: relative;
+}
+
+.errorMsg {
+    color: var(--secondary-clr);
+    background-color: color-mix(in srgb, var(--secondary-clr), white 80%);
+    padding: var(--space-xs);
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid var(--secondary-clr);
+    font-size: var(--fs-sm);
+    backdrop-filter: blur(12px);
+}
+
+.loginFormBody {
+    align-content: center;
+    justify-content: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-8);
 }

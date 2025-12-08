@@ -8,11 +8,18 @@ body {
     max-height: 100dvh;
     overflow: hidden;
     display: grid;
+    gap: 0;
     grid-template-rows: repeat(2, 1fr);
 }
 
+.authCard {
+    box-shadow: none;
+    background-color: color-mix(in srgb, var(--neutral-600), transparent 95%);
+    backdrop-filter: blur(12px);
+}
+
 .authCardBody {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid;
 }
 
 .heroSection {
@@ -20,7 +27,24 @@ body {
 }
 
 .formSection {
+    background: 
+        radial-gradient(
+            circle at 150% -60%,
+            var(--primary-clr) 10%,
+            color-mix(in srgb, var(--primary-clr), transparent 100%) 66%,
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 150% 160%,
+            var(--secondary-clr),
+            color-mix(in srgb, var(--secondary-clr), transparent 100%) 66%,
+            transparent
+        )
+    ;
+    display: grid;
+    align-content: center;
     padding: var(--space-sm);
+    position: relative;
 }
 
 .authLogo {

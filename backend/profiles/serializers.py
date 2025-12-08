@@ -10,6 +10,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils.text import slugify
+import secrets
+
+def generate_username(first_name, last_name):
+    base = slugify(f"{first_name} {last_name}")
+    suffix = secrets.token_hex(2)
+    return f"{base}-{suffix}"
 
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -71,6 +78,17 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         return user
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        'no_active_account': "Incorrect username or password. Please try again",
+    }
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+        del self.fields['username']
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -81,44 +99,88 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
     
     def validate(self, attrs):
-        data = super().validate(attrs)
+        email = attrs.get("email")
+        password = attrs.get("password")
 
-        data['username'] = self.user.username
-        data['email'] = self.user.email
-        data['user_id'] = self.user.id
+        if email and password:
+            try:
+                user_obj = User.objects.get(email=email)
+            except User.DoesNotExist:
+                raise serializers.ValidationError(
+                    self.default_error_messages["no_active_account"]
+                )
+            
+            if not user_obj.check_password(password):
+                raise serializers.ValidationError(
+                    self.default_error_messages["no_active_account"]
+                )
+
+            print(user_obj)
+            self.user = user_obj
+        
+        else:
+            raise serializers.ValidationError("Must include email and password")
+        
+        refresh = self.get_token(self.user)
+
+        data = {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+            "username": self.user.username,
+            "firstName": self.user.profile.first_name or "User",
+            "lastName": self.user.profile.last_name or "Name",
+        }
 
         return data
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(write_only=True, max_length=50)
+    last_name = serializers.CharField(write_only=True, max_length=50)
     password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
 
     class Meta:
         model=User
         fields = [
-            'username', 'email', 'password', 'confirm_password'
+            'username', 'email', 'password', 
+            'first_name', 'last_name', 'confirm_password'
         ]
+
+        read_only_fields = ['username']
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError({
                 "confirm_password": "Passwords dont match"
             })
+
         return data
     
     def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError("Email required")
+
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("User already registered")
         return value
-    
+
     def create(self, validated_data):
         validated_data.pop('confirm_password')
+        first_name = validated_data.pop('first_name')
+        last_name = validated_data.pop('last_name')
+
+        username = generate_username(first_name, last_name)
 
         user = User.objects.create_user(
-            username=validated_data['username'],
+            username=username,
             email=validated_data['email'],
             password=validated_data['password']
         )
+
+        profile = user.profile
+        profile.first_name = first_name
+        profile.last_name = last_name
+        profile.save()
 
         return user
 

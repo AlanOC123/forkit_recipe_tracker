@@ -4,6 +4,7 @@
 
     padding: 0.5em;
     height: 100%;
+    width: 100%;
     max-width: 50ch;
 
     background-color: var(--neutral-300);
@@ -61,7 +62,7 @@
     }
 
     & button.show-password {
-        height: 100%;
+        min-height: 100%;
         background-color: var(--neutral-300);
         border-top-left-radius: 12px;
         border-bottom-left-radius: 12px;
@@ -72,5 +73,28 @@
         &:hover {
             background-color: var(--neutral-400);
         }
+    }
+}
+
+.inputMsg {
+    font-size: var(--fs-xs);
+    padding: 0.25em 1em;
+    border-radius: 0.5em;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    max-width: 50ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+
+    &.warningMsg {
+        --base-clr: color-mix(in srgb, var(--primary-clr) 25%, var(--secondary-clr) 75%);
+        color: color-mix(in srgb, var(--base-clr), white 25%);
+    }
+
+    &.errorMsg {
+        color: color-mix(in srgb, var(--secondary-clr), white 10%)
     }
 }

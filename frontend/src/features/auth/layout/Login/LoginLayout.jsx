@@ -1,57 +1,89 @@
 import { AuthPage } from "../../components/AuthPage/AuthPage";
 import {
-    TextInputGroup,
+    EmailInputGroup,
     PasswordInputGroup,
 } from "../../../../components/Input/Input";
-import { Logo } from "../../../../components/Logo/Logo";
 import { Button } from "../../../../components/Button/Button";
-import { Card } from "../../../../components/Card/Card";
 import { ButtonGroup } from "../../components/ButtonGroup/ButtonGroup";
 import { ForgotPassword } from "../../components/ForgotPassword/ForgotPassword";
-import { HeroImage } from "../../components/HeroImage/HeroImage";
 import styles from "./LoginLayout.module.css";
-import { Section } from "../../../../components/Section/Section";
 import loginImage from "../../../../assets/login-page.jpg";
 import { useState } from "react";
+import { cn } from "../../../../utils/classNames";
+import { useAuth } from '../../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function LoginLayout() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const { loginUser } = useAuth();
+    const navigate = useNavigate();
 
-    const updateUsername = (e) => setUsername(e.target.value)
-    const updatePassword = (e) => setPassword(e.target.value)
+    const handleChange = (e, field) => {
+        setFormData({ ...formData, [field]: e.target.value });
+    };
+
+    const handleLogin = async (e) => {
+        setIsLoading(true);
+        try {
+            await loginUser(formData);
+            navigate("/");
+        } catch (err) {
+            console.log(err);
+            if (err.response?.data) {
+                setErrors(err.response?.data)
+            } else {
+                setErrors({ detail: "Something went wrong. Please try again." })
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    };
 
     const formInputs = (
         <>
-            <TextInputGroup 
-            placeholder={"Whats your name?"} 
-            inputValue={username}
-            labelText={"Username"}
-            onChange={updateUsername}
+            {errors.detail && <span className={styles.errorMsg}>{errors.detail}</span>}
+            <EmailInputGroup
+                placeholder={"Whats your email?"}
+                inputValue={formData.email}
+                labelText={"Email"}
+                onChange={(e) => handleChange(e, "email")}
+                error={errors.email}
             />
-            <PasswordInputGroup 
-            placeholder={"Whats your password?"} 
-            inputValue={password}
-            labelText={"Password"}
-            onChange={updatePassword}
+            <PasswordInputGroup
+                placeholder={"Whats your password?"}
+                inputValue={formData.password}
+                labelText={"Password"}
+                onChange={(e) => handleChange(e, "password")}
+                error={errors.password}
             />
         </>
-    )
+    );
 
     const formControls = (
         <ButtonGroup>
-            <Button kind={"primary"}>Login</Button>
-            <Button kind={"secondary"}>Sign Up</Button>
+            <Button kind={"primary"} onClick={handleLogin}>
+                {isLoading ? "Loggin in..." : "Login"}
+            </Button>
+            <Button kind={"secondary"} href={"/sign-up"}>
+                Sign Up
+            </Button>
         </ButtonGroup>
-    )
+    );
 
     const formSection = (
-        <AuthPage.FormSection headerText={"Login"} inputs={formInputs} controls={formControls}></AuthPage.FormSection>
+        <AuthPage.FormSection
+            headerText={"Login"}
+            inputs={formInputs}
+            controls={formControls}
+            formBodyClassName={styles.loginFormBody}
+        ></AuthPage.FormSection>
     );
 
     return (
         <AuthPage
-            elementClasses={[styles.login]}
+            elementClass={cn(styles.login)}
             formSection={formSection}
             heroSection={<AuthPage.HeroSection src={loginImage} />}
         />

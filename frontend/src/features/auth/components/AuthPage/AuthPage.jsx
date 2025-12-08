@@ -16,16 +16,16 @@ function HeroSection({ src }) {
     )
 }
 
-function FormSection({ headerText, children, controls, inputs }) {
+function FormSection({ headerText, children, controls, inputs, onSubmit, formBodyClassName }) {
     return (
         <Section elementClass={cn(styles.formSection)}>
             <Section.Header>{headerText}</Section.Header>
-            <Form>
-                <Card>
-                    <Card.Body elementClass={styles.authCardBody}>
+            <Form onSubmit={onSubmit}>
+                <Card elementClass={styles.authCard}>
+                    <Card.Body elementClass={cn(styles.authCardBody, formBodyClassName)}>
                         {inputs}
                     </Card.Body>
-                    .<Card.Footer>{controls}</Card.Footer>
+                    <Card.Footer>{controls}</Card.Footer>
                     {children}
                 </Card>
             </Form>

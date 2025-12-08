@@ -1,19 +1,38 @@
 .icon {
     background-color: transparent;
     font-size: inherit;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .standard {
     & :global(.material-symbols-outlined) {
+        height: 100%;
+        width: 100%;
         font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
-        display: inline-block;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
         font-size: inherit;
         line-height: inherit;
+        line-height: 1;
     }
 }
 
 .toggle {
+    height: 100%;
+    width: 100%;
+    font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: inherit;
+    line-height: inherit;
+    line-height: 1;
+
     &.toggled :global(.material-symbols-outlined) {
         font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
         font-size: inherit;
