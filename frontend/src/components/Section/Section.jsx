@@ -11,6 +11,14 @@ function SectionHeader({ children, elementClass, ...props }) {
     );
 }
 
+function SectionBody({ children, elementClass, ...props }) {
+    const elementStyle = cn(styles.sectionBody, elementClass)
+
+    return <div className={elementStyle} {...props}>
+        {children}
+    </div>
+}
+
 function Section({ children, elementClass, ...props }) {
     const elementStyle = cn(styles.section, elementClass);
 
@@ -22,5 +30,6 @@ function Section({ children, elementClass, ...props }) {
 }
 
 Section.Header = SectionHeader;
+Section.Body = SectionBody;
 
 export { Section };

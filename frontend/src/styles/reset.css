@@ -59,6 +59,14 @@ body {
     height: 100%;
 }
 
+ul {
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
 #root {
     width: 100%;
     height: 100%;

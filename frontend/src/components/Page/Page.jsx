@@ -7,9 +7,9 @@ function PageHeader({ children }) {
 
 function Page({ children, id, elementClass, ...props }) {
     return (
-        <main className={cn(styles.page, elementClass)} id={id} {...props}>
+        <div className={cn(styles.page, elementClass)} id={id} {...props}>
             {children}
-        </main>
+        </div>
     );
 }
 

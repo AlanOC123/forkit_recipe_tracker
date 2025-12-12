@@ -1,0 +1,14 @@
+.home {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "sidebar header" "sidebar dashboard";
+}
+
+.homeHeader {
+    grid-area: header;
+}
+
+.homeSidebar {
+    grid-area: sidebar;
+}

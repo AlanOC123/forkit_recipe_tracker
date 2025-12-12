@@ -24,7 +24,7 @@ export function LoginLayout() {
         setFormData({ ...formData, [field]: e.target.value });
     };
 
-    const handleLogin = async (e) => {
+    const handleLogin = async () => {
         setIsLoading(true);
         try {
             await loginUser(formData);
@@ -78,7 +78,7 @@ export function LoginLayout() {
             inputs={formInputs}
             controls={formControls}
             formBodyClassName={styles.loginFormBody}
-        ></AuthPage.FormSection>
+        >{<ForgotPassword />}</AuthPage.FormSection>
     );
 
     return (

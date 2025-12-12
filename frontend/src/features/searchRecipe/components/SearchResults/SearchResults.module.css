@@ -1,0 +1,27 @@
+.searchResultsContainer {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: var(--space-2);
+    gap: var(--space-4);
+}
+
+.resultsHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.cardsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    place-content: start;
+    gap: var(--space-8);
+}
+
+.recipeCardHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 33%;
+}

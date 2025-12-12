@@ -1,6 +1,6 @@
 import styles from "./Input.module.css";
 import { IconOnlyButton, IconOnlyToggleButton } from "../Button/Button";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { cn } from "../../utils/classNames";
 
 export function TextInputGroup({
@@ -23,7 +23,11 @@ export function TextInputGroup({
                 value={inputValue}
                 onChange={onChange}
             />
-            {error && <span className={cn(styles.inputMsg, styles.errorMsg)}>{error}</span>}
+            {error && (
+                <span className={cn(styles.inputMsg, styles.errorMsg)}>
+                    {error}
+                </span>
+            )}
         </div>
     );
 }
@@ -83,12 +87,12 @@ export function EmailInputGroup({
     error: externalError,
     ...props
 }) {
-    
     const validationError = useMemo(() => {
         if (!inputValue || inputValue.length < 5) return null;
-        if (!inputValue.includes("@")) return "Invalid email. Must include an @ symbol."
-        return null
-    }, [inputValue])
+        if (!inputValue.includes("@"))
+            return "Invalid email. Must include an @ symbol.";
+        return null;
+    }, [inputValue]);
 
     const displayError = externalError || validationError;
 
@@ -105,10 +109,72 @@ export function EmailInputGroup({
                 className={styles["text-input"]}
             />
             {displayError && (
-                <span className={cn(styles.inputMsg, (externalError ? styles.errorMsg : styles.warningMsg))}>
+                <span
+                    className={cn(
+                        styles.inputMsg,
+                        externalError ? styles.errorMsg : styles.warningMsg
+                    )}
+                >
                     {displayError}
                 </span>
             )}
+        </div>
+    );
+}
+
+export function SearchInput({
+    placeholder,
+    inputValue = "",
+    onChange,
+    elementClass,
+}) {
+    const handleChange = (e) => {
+        e.preventDefault();
+        if (onChange) onChange(e);
+    };
+
+    return (
+        <input
+            type="search"
+            placeholder={placeholder}
+            className={cn(styles["text-input"], elementClass)}
+            onChange={handleChange}
+            value={inputValue}
+        />
+    );
+}
+
+export function SearchInputGroup({
+    placeholder,
+    inputValue = "",
+    onChange,
+    onClick,
+    textFieldClassName,
+    ...props
+}) {
+    const handleClick = (e) => {
+        e.preventDefault();
+        if (onClick) onClick(e);
+    };
+
+    return (
+        <div
+            className={cn(styles["text-field"], styles.searchInput)}
+            {...props}
+        >
+            <input
+                type="search"
+                placeholder={placeholder}
+                value={inputValue}
+                onChange={onChange}
+                className={styles["text-input"]}
+            />
+            <IconOnlyButton
+                kind={"tertiary"}
+                icon={"search"}
+                elementClass={styles.searchIcon}
+                onClick={handleClick}
+            />
         </div>
     );
 }

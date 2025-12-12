@@ -1,12 +1,16 @@
-import { Route, Routes } from 'react-router-dom';
-import { Home, SignUp, Login } from './Registry';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Main, SignUp, Login } from './Registry';
+import { Dashboard, Search } from './Registry';
 
 function App() {
   return (
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/sign-up' element={<SignUp />}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route element={<Main />}>
+            <Route path='/' element={<Dashboard />} />
+            <Route path='/search' element={<Search />} />
+          </Route>
       </Routes>
   );
 }

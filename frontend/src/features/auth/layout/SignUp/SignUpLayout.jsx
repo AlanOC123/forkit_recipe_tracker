@@ -15,7 +15,7 @@ export function SignUpLayout() {
         last_name: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        confirm_password: "",
     });
 
     const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ export function SignUpLayout() {
         setFormData({ ...formData, [field]: e.target.value });
     };
 
-    const handleLogin = async (e) => {
+    const handleLogin = async () => {
         setIsLoading(true);
         try {
             await registerUser(formData);

@@ -1,0 +1,8 @@
+.searchContainer {
+    display: grid;
+    grid-template-rows: auto 100px 1fr;
+    gap: var(--space-8);
+    width: clamp(300px, 800px, 80%);
+    height: 100%;
+    justify-self: center;
+}

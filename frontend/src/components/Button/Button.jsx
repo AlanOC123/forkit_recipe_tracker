@@ -74,10 +74,12 @@ export function ToggleButton({
 
 export function IconOnlyButton({
     icon,
+    type,
     variant = "standard",
     size = "sm",
     kind,
     elementClass,
+    href,
     ...props
 }) {
     const elementStyle = cn(
@@ -88,11 +90,17 @@ export function IconOnlyButton({
         elementClass
     );
 
-    return (
-        <button className={elementStyle} {...props}>
+    const el = href ? (
+        <a href={href} className={elementStyle} {...props}>
+            <StandardIcon>{icon}</StandardIcon>
+        </a>
+    ) : (
+        <button type={type} className={elementStyle} {...props}>
             <StandardIcon>{icon}</StandardIcon>
         </button>
     );
+
+    return el;
 }
 
 export function IconOnlyToggleButton({
