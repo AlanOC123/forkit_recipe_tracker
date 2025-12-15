@@ -1,0 +1,6 @@
+.cuisinesContainer {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: var(--space-8);
+}

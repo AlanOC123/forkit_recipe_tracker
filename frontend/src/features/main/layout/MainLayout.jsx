@@ -1,6 +1,6 @@
 import styles from "./MainLayout.module.css";
-import { Header } from "../components/Header/Header";
-import { Sidebar } from "../components/Sidebar/Sidebar";
+import { MainHeader } from "../components/MainHeader/MainHeader";
+import { MainSidebar } from "../components/MainSidebar/MainSidebar";
 import { cn } from "../../../utils/classNames";
 import { Outlet } from "react-router-dom";
 import { Page } from "../../../components/Page/Page";
@@ -10,8 +10,8 @@ export function MainLayout() {
     return (
         <Page elementClass={cn(styles.main)}>
             <DashboardProvider>
-                <Header elementClass={cn(styles.mainHeader)} />
-                <Sidebar elementClass={cn(styles.mainSidebar)} />
+                <MainHeader />
+                <MainSidebar />
                 <main className={cn(styles.mainWindow)}>
                     <Outlet />
                 </main>

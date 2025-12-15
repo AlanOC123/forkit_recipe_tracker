@@ -1,19 +1,40 @@
 .main {
     display: grid;
     grid-template-rows: auto 1fr;
-    grid-template-columns: auto 1fr;
-    grid-template-areas: "sidebar header" "sidebar dashboard";
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "content";
+    max-width: 100dvw;
 }
 
-.mainHeader {
+header.mainHeader {
     grid-area: header;
-}
-
-.mainSidebar {
-    grid-area: sidebar;
-}
+} 
 
 .mainWindow {
     width: 100%;
     height: 100%;
+    grid-area: content;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .main {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "sidebar header" "sidebar content";
+        max-width: 100dvw;
+        overflow: hidden;
+    }
+
+    aside.mainSidebar {
+        position: relative;
+
+        &.collapsed {
+            max-width: 80px;
+            overflow: hidden;
+            padding: 0;
+        }
+    }
 }

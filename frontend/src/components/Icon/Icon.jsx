@@ -1,5 +1,5 @@
-import { cn } from '../../utils/classNames';
-import styles from './Icon.module.css';
+import { cn } from "../../utils/classNames";
+import styles from "./Icon.module.css";
 
 export function StandardIcon({ children, elementClass, size }) {
     const elementStyle = cn(
@@ -11,14 +11,9 @@ export function StandardIcon({ children, elementClass, size }) {
 
     return (
         <span className={elementStyle}>
-            <i
-                className="material-symbols-outlined"
-                style={{ verticalAlign: "middle", fontStyle: "normal" }}
-            >
-                {children}
-            </i>
+            <i className="material-symbols-outlined">{children}</i>
         </span>
-    ); 
+    );
 }
 
 export function ToggleIcon({ children, size, elementClass, isToggled }) {

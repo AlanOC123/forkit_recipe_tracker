@@ -1,9 +1,8 @@
-import { cn } from "../../../../utils/classNames";
+import { cn } from "../../utils/classNames";
 import styles from "./SearchResults.module.css";
-import { Card } from "../../../../components/Card/Card";
+import { Card } from "../Card/Card";
 import { SyncLoader } from "react-spinners";
-import { StandardIcon } from "../../../../components/Icon/Icon";
-import { RecipeCard } from "../../../../components/RecipeCard/RecipeCard";
+import { StandardIcon } from "../Icon/Icon";
 
 function EmptyCard() {
     return (
@@ -30,6 +29,8 @@ function SearchResults({ children, isLoading, isPopulated }) {
         elementStyle = styles.loading;
     } else if (isPopulated) {
         elementStyle = styles.populated;
+    } else {
+        styles.empty
     }
 
     return (
@@ -41,6 +42,5 @@ function SearchResults({ children, isLoading, isPopulated }) {
 
 SearchResults.EmptyCard = EmptyCard;
 SearchResults.LoadingCard = LoadingCard;
-SearchResults.ResultCard = RecipeCard;
 
 export { SearchResults };

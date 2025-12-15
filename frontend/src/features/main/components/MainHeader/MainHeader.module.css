@@ -1,0 +1,26 @@
+.mainHeader {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: var(--space-2);
+    gap: var(--space-8);
+}
+
+.mainHeaderGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.mainHeaderLogo {
+    display: flex;
+    width: clamp(48px, 8dvw, 72px);
+    aspect-ratio: 1;
+}
+
+@media (min-width: 768px) {
+    .mainHeader {
+        padding: var(--space-4);
+    }
+}

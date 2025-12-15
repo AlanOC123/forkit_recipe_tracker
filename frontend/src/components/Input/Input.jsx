@@ -127,6 +127,8 @@ export function SearchInput({
     inputValue = "",
     onChange,
     elementClass,
+    onFocus,
+    onBlur
 }) {
     const handleChange = (e) => {
         e.preventDefault();
@@ -140,6 +142,8 @@ export function SearchInput({
             className={cn(styles["text-input"], elementClass)}
             onChange={handleChange}
             value={inputValue}
+            onFocus={onFocus}
+            onBlur={onBlur}
         />
     );
 }

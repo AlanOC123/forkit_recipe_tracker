@@ -1,8 +1,8 @@
 import api from '../api';
 
 const ENDPOINTS = {
-    RECIPES: 'recipes/',
-    COMPLETIONS: 'recipe_completions/'
+    RECIPES: 'api/recipes/',
+    COMPLETIONS: 'api/recipe_completions/'
 }
 
 export const getRecipeByUser = async (user) => {

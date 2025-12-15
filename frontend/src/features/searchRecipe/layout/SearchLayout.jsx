@@ -11,58 +11,24 @@ import { SearchBar } from "../components/SearchBar/SearchBar";
 import { SearchCard } from "../components/SearchCard/SearchCard";
 import { History } from "../components/History/History";
 import { useDashboard } from "../../../context/DashboardContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { useState } from "react";
-import { SearchResults } from "../components/SearchResults/SearchResults";
-
-const DUMMY_DATA = [
-    {
-        id: 1,
-        title: "Spaghetti Carbonara",
-        author_username: "chef_mario",
-        course: "Dinner",
-        difficulty: "Medium",
-        fork_count: 42,
-    },
-    {
-        id: 2,
-        title: "Avocado Toast",
-        author_username: "hip_cook",
-        course: "Breakfast",
-        difficulty: "Easy",
-        fork_count: 10,
-    },
-    {
-        id: 3,
-        title: "Beef Wellington",
-        author_username: "gordon_r",
-        course: "Lunch",
-        difficulty: "Hard",
-        fork_count: 156,
-    },
-];
-
-const mockSearchService = async (term) => {
-    return new Promise((resolve) => {
-        console.log(`Searching for: ${term}...`);
-
-        // Simulate 1.5 second network delay
-        setTimeout(() => {
-            resolve(DUMMY_DATA);
-        }, 1500);
-    });
-};
+import { SearchResults } from "../../../components/SearchResults/SearchResults";
+import { searchRecipe } from "../../../services/recipeService";
+import { RecipeCard } from "../../../components/RecipeCard/RecipeCard";
 
 export function SearchLayout() {
     const { updateHeaderValue } = useDashboard();
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [recipes, setRecipes] = useState([]);
-    const [receipeCount, setRecipeCount] = useState(0);
+    const [recipeCount, setRecipeCount] = useState(0);
     const [recent, setRecent] = useState([]);
     const [recentCount, setRecentCount] = useState(0);
+    const [isOpen, setIsOpen] = useState(false)
 
+    const blurTimerRef = useRef(null);
     const debouncedSearchTerm = useDebounce(searchTerm, 1000);
 
     useEffect(() => {
@@ -90,7 +56,9 @@ export function SearchLayout() {
         const executeSearch = async () => {
             setIsLoading(true);
 
-            const results = await mockSearchService(debouncedSearchTerm);
+            const results = await searchRecipe(debouncedSearchTerm);
+
+            console.log(results);
 
             setRecipes(results);
             setRecipeCount(results.length);
@@ -102,6 +70,7 @@ export function SearchLayout() {
                 setRecentCount(updatedHistory.length);
             }
 
+            setIsOpen(false);
             setIsLoading(false);
         };
 
@@ -127,14 +96,41 @@ export function SearchLayout() {
         setRecentCount(history.length);
     };
 
-    let cards = null;
+    const cards = recipeCount
+        ? recipes.map(
+              ({
+                  title,
+                  author_username,
+                  course,
+                  cuisine,
+                  difficulty,
+                  id,
+                  cook_time,
+              }) => (
+                  <RecipeCard
+                      title={title}
+                      course={course}
+                      cuisine={cuisine}
+                      key={id}
+                      difficulty={difficulty}
+                      cookingTime={cook_time}
+                      author_username={author_username}
+                  />
+              )
+          )
+        : null;
 
-    if (isLoading) {
-        cards = <SearchResults.LoadingCard />;
-    } else if (!receipeCount) {
-        cards = <SearchResults.EmptyCard />;
-    } else {
-        cards = recipes.map(({title, course, difficulty, id}) => <SearchResults.ResultCard title={title} course={course} difficulty={difficulty} id={id} />);
+    
+    const handleFocus = () => {
+        if (blurTimerRef.current) {
+            clearTimeout(blurTimerRef.current);
+        }
+
+        setIsOpen(true)
+    } 
+
+    const handleBlur = () => {
+        blurTimerRef.current = setTimeout(() => { setIsOpen(false) }, 200)
     }
 
     return (
@@ -143,8 +139,10 @@ export function SearchLayout() {
                 <SearchBar
                     inputValue={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                 />
-                <History searchCount={recentCount}>
+                <History searchCount={recentCount} onToggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
                     {recent.length ? (
                         recent.map((term, ind) => (
                             <SearchCard
@@ -161,7 +159,17 @@ export function SearchLayout() {
                         <SearchCard.Empty />
                     )}
                 </History>
-                <SearchResults resultCount={receipeCount}>{cards}</SearchResults>
+                {isLoading ? (
+                    <SearchResults.LoadingCard />
+                ) : (
+                    <SearchResults
+                        resultCount={recipeCount}
+                        isLoading={isLoading}
+                        isPopulated={recipeCount > 0}
+                    >
+                        {cards}
+                    </SearchResults>
+                )}
             </div>
         </Section>
     );

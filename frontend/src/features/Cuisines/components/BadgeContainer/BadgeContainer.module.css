@@ -1,0 +1,77 @@
+.badgeContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badgeControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-8);
+    background-color: var(--neutral-200);
+    border-radius: 999px;
+    padding: var(--space-2);
+    width: 100%;
+    max-width: 200px;
+    box-shadow: var(--shadow-lvl-2);
+}
+
+.badgeListContainer {
+    position: absolute;
+    bottom: calc(var(--space-2) * -1);
+    left: 50%;
+    transform: translate(-50%, 100%);
+    transition: height 300ms ease, padding 300ms ease, opacity 300ms ease;
+
+    &.hidden {
+        max-height: 0;
+        opacity: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    &.shown {
+        max-height: 100%;
+        opacity: 1;
+        padding: var(--space-2);
+        overflow: visible;
+    }
+}
+
+.badgeList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    background-color: var(--neutral-200);
+    padding: var(--space-2);
+    border-radius: 1em;
+    box-shadow: var(--shadow-lvl-1);
+}
+
+.cuisineBadge {
+    border-radius: 999px;
+    border: 1px solid var(--neutral-400);
+    padding: 0.4em 0.6em;
+    background-color: var(--neutral-300);
+    box-shadow: var(--shadow-lvl-1);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+
+    &:hover {
+        background-color: var(--neutral-400);
+        cursor: pointer;
+    }
+}
+
+.containerShown {
+    transform: rotate(180deg);
+}
+
+.containerHidden {
+    transform: rotate(0deg);
+}

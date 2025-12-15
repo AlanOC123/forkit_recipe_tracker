@@ -1,6 +1,4 @@
 .history {
-    display: grid;
-    grid-template-rows: auto auto;
     gap: var(--space-4);
     justify-self: center;
     width: clamp(200px, 75ch, 100%);
@@ -11,6 +9,7 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .collapseHistory {
@@ -24,8 +23,11 @@
 .historyWrapper {
     border-radius: 2rem;
     padding: 0;
-    position: relative;
-    width: 100%;
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--space-4) * -1);
+    transform: translate(-50%);
+    width: 90%;
     max-height: 0;
 
     &.collapsedContainer {
@@ -84,5 +86,5 @@
     position: absolute;
     border-radius: 2rem;
     width: 100%;
-    transition: all 300ms ease;
+    transition: padding 300ms ease-in-out, opacity 300ms ease-in-out;
 }

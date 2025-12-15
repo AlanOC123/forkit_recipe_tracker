@@ -107,23 +107,24 @@ export function IconOnlyToggleButton({
     icon,
     size = "sm",
     kind,
-    initialToggleState = false,
+    isToggled = false,
     onClick,
     elementClass,
     ...props
 }) {
-    const [isActive, setIsActive] = useState(initialToggleState);
-
     const handleClick = (e) => {
-        setIsActive(!isActive);
-        if (onClick) onClick(e);
-    };
+        e.preventDefault()
+
+        if (onClick) {
+            onClick(e)
+        }
+    }
 
     const elementStyle = cn(
         styles["icon-only"],
         styles[kind],
         styles.toggle,
-        isActive ? styles.active : styles.inactive,
+        isToggled ? styles.active : styles.inactive,
         styles[size],
         elementClass
     );

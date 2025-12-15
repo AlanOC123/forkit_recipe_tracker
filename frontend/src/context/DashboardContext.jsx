@@ -4,14 +4,18 @@ const DashboardContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
     const [pageHeader, setPageHeader] = useState('Forkit');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const updateHeaderValue = (newValue) => setPageHeader(newValue);
+    const updateIsSidebarOpen = () => setIsSidebarOpen(!isSidebarOpen)
 
     return (
         <DashboardContext.Provider
             value={{
                 updateHeaderValue,
-                pageHeader
+                pageHeader,
+                updateIsSidebarOpen,
+                isSidebarOpen
             }}
         >
             {children}
