@@ -1,0 +1,32 @@
+.
+├── App.jsx
+├── api
+├── assets
+│   ├── login-page.jpg
+│   ├── logo.png
+│   ├── placeholderRecipeImg.jpg
+│   └── sign-up-page.jpg
+├── features
+│   ├── auth
+│   ├── index.js
+│   └── recipes
+├── main.jsx
+├── shared
+│   ├── components
+│   ├── constants
+│   ├── hooks
+│   ├── index.js
+│   └── services
+├── styles
+│   ├── reset.css
+│   ├── root.css
+│   ├── spacing.css
+│   ├── theme.css
+│   └── typography.css
+├── styles.css
+└── utils
+    ├── classNames.js
+    ├── imageUtils.js
+    └── refreshToken.js
+
+13 directories, 17 files

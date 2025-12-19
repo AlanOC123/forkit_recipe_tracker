@@ -1,4 +1,4 @@
-export const getImage = (path) => {
+const getImage = (path) => {
     if (!path) return;
 
     if (path.startsWith("http://") || path.startsWith("https://")) {
@@ -10,3 +10,5 @@ export const getImage = (path) => {
 
     return `${baseUrl}${cleanPath}`
 }
+
+export default getImage;

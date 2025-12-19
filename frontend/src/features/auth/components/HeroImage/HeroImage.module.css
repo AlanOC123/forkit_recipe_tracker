@@ -1,9 +1,0 @@
-.heroImage {
-    background-image: url('../../../../assets/login-page.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    mask-image: radial-gradient(circle at top right, transparent 25%, black 25%);
-    z-index: -1;
-    height: 100%;
-}
