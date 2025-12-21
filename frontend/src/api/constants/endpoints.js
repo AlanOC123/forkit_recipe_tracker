@@ -7,9 +7,3 @@ const ENDPOINTS = Object.freeze({
 })
 
 export const getAuthEndpoints = () => ({ ...ENDPOINTS.AUTH });
-
-const endpointsAPI = {
-    getAuthEndpoints,
-}
-
-export default endpointsAPI;

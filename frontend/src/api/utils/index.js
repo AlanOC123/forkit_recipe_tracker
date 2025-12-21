@@ -1,1 +1,1 @@
-export { default as tokenRefresh } from './tokenRefresh';
+export * from './refreshAccessToken';

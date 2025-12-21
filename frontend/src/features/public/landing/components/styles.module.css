@@ -1,0 +1,127 @@
+.heroSection {
+    position: relative;
+    overflow: hidden;
+    gap: 0;
+    width: 100dvw;
+    height: 100dvh;
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    & img {
+        width: clamp(10rem, 33dvw, 24rem);
+    }
+}
+
+.heroTextContainer {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    z-index: 1;
+    justify-items: center;
+    align-content: space-between;
+    padding-block: 1em;
+    width: 100%;
+}
+
+.textContainer {
+    width: clamp(300px, 100dvw, 600px);
+}
+
+.heroImgContainer {
+    height: 100%;
+    width: 100%;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    max-height: 100dvh;
+    max-width: 100dvw;
+}
+
+.loginBtn {
+    max-width: 100%;
+    background: linear-gradient(to top right, var(--color-primary-100), var(--color-primary-700));
+    color: var(--color-neutral-100);
+}
+
+.signUpBtn {
+    max-width: 100%;
+    color: var(--color-neutral-50);
+    background-color: color-mix(in oklab, var(--color-neutral-500), transparent 60%);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--color-neutral-50);
+}
+
+.exploreBtn {
+    max-width: 100%;
+    color: var(--color-neutral-50);
+}
+
+.btnContainer {
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    padding-inline: 0.5em;
+}
+
+.featuresGridSection {
+    min-height: 100dvh;
+    width: 100dvw;
+    overflow: hidden;
+    background: 
+        radial-gradient(circle at center, color-mix(in oklab, var(--color-neutral-50), transparent 60%), transparent),
+        radial-gradient(ellipse at -20% 120%, color-mix(in oklab, var(--color-primary-50), transparent 60%), transparent),
+        radial-gradient(ellipse at top right, color-mix(in oklab, var(--color-secondary-50), transparent 60%), transparent),
+        radial-gradient(circle at top left, color-mix(in oklab, var(--color-accent-50), transparent 60%), transparent)
+    ;
+    background-color: var(--color-neutral-50);
+    grid-template-rows: auto 1fr;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+}
+
+.gridPreviewItems {
+    flex-wrap: wrap;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.featureButton {
+    max-width: 200px;
+    flex: 1;
+    flex-direction: column;
+    aspect-ratio: 1;
+    background-color: color-mix(in oklab, var(--color-neutral-100), transparent 65%);
+
+    &:hover {
+        background-color: color-mix(in oklab, var(--color-neutral-100), transparent 35%);
+    }
+
+    &.isActive {
+        background-color: color-mix(in oklab, var(--color-neutral-300), transparent 35%);
+    }
+}
+
+.featureCard {
+    transition: background 300ms ease;
+}
+
+
+@media (min-width: 768px) {
+    .featuresGrid {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 1fr;
+    }
+
+    .gridPreviewItems {
+        flex-direction: column;
+    }
+}

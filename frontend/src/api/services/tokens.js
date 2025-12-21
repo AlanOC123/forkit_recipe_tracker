@@ -9,13 +9,11 @@ const getAccessToken = () => localStorage.getItem(STORAGE_KEYS.ACCESS);
 const getRefreshToken = () => localStorage.getItem(STORAGE_KEYS.REFRESH);
 
 const setAccessToken = (token) => {
-    if (!token) return null;
     localStorage.setItem(STORAGE_KEYS.ACCESS, token);
     return localStorage.getItem(STORAGE_KEYS.ACCESS);
 };
 
 const setRefreshToken = (token) => {
-    if (!token) return null;
     localStorage.setItem(STORAGE_KEYS.REFRESH, token);
     return localStorage.getItem(STORAGE_KEYS.REFRESH);
 };
@@ -37,6 +35,7 @@ export const isTokenUseable = (token) => {
     try {
         if (!token) return false;
         const { exp } = jwtDecode(token);
+        console.log(exp)
         return exp >= (Date.now() / 1000) + 1;
     } catch (err) {
         console.error(err);
@@ -44,11 +43,11 @@ export const isTokenUseable = (token) => {
     }
 }
 
-const tokensAPI = {
+const tokensService = {
     getTokens,
     setTokens,
     clearTokens,
     isTokenUseable,
 };
 
-export default tokensAPI;
+export default tokensService;

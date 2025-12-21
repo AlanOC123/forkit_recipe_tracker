@@ -1,1 +1,2 @@
-export { Login } from './auth/pages/Login.jsx'
+export * from './public';
+export * from './protected';

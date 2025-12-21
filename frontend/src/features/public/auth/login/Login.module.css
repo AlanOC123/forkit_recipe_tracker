@@ -1,0 +1,10 @@
+.loginPage {
+    width: 100dvw;
+    height: 100dvh;
+    min-width: 100dvw;
+    min-height: 100dvh;
+}
+
+.loginSection {
+    grid-template-rows: auto 1fr;
+}

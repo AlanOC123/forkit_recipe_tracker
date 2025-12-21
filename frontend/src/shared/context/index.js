@@ -1,1 +1,4 @@
-export { default as authContextAPI } from './auth';
+export * as AuthContext from './Auth';
+export * as DashboardContext from './Dashboard';
+export * as LandingPageContext from './LandingPage';
+export * as LoginContext from './Login';

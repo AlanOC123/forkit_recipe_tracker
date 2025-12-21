@@ -1,5 +1,4 @@
-import styles from "./Button.module.css";
-import { cn } from "../../../utils";
+import { cn } from "../../utils";
 import { cva } from "class-variance-authority";
 import { forwardRef } from "react";
 
@@ -12,7 +11,7 @@ const buttonVariants = cva("btn", {
                 "bg-white rounded-full shadow-sm hover:bg-neutral-100 hover:shadow-md secondary",
             outlined:
                 "rounded-full text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 outlined",
-            ghost: "text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100 rounded-full",
+            ghost: "text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100/40 rounded-full",
             link: "link text-neutral-800 hover:text-accent-400 link",
             destructive:
                 "bg-destructive-50 text-destructive-950 rounded-full shadow-sm hover:shadow-md hover:bg-destructive-200 destructive ",
@@ -30,7 +29,7 @@ const buttonVariants = cva("btn", {
     },
 });
 
-const Button = forwardRef(({ children, className, variant, size, ...props }, ref) => {
+export const Button = forwardRef(({ children, className, variant, size, ...props }, ref) => {
     const { onClick } = props;
 
     const handleClick = (e) => {
@@ -47,13 +46,11 @@ const Button = forwardRef(({ children, className, variant, size, ...props }, ref
         ref={ref}
             onClick={handleClick}
             className={cn(
-                buttonVariants({ variant, size, className }),
-                styles.btn
+                buttonVariants({ variant, size, className })
             )}
+            {...props}
         >
             {children}
         </button>
     );
 })
-
-export default Button;
