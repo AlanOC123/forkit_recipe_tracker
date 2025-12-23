@@ -5,7 +5,6 @@ import { Button } from "../../../../../shared/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { AuthCard } from "../../components";
-import { useEffect } from "react";
 
 const StageControlButton = ({ isLeft }) => {
     const { nextStep, previousStep } = useRegister();
@@ -24,25 +23,22 @@ const StageControlButton = ({ isLeft }) => {
 const StageSelectorButton = ({ stageKey, index }) => {
     const {
         currStepIndex,
-        isSectionComplete,
-        hasSectionError,
+        stepStatus,
         sectionRefs,
-        setStep,
+        setStep
     } = useRegister();
-    const ref = sectionRefs[stageKey];
-    const isComplete = isSectionComplete[stageKey];
-    const hasError = hasSectionError[stageKey];
+
+    const { isComplete, hasError } = stepStatus[stageKey];
 
     return (
         <Button
             className={cn(
                 styles.stageSelectBtn,
                 currStepIndex === index ? styles.isActive : "",
-                isComplete && !hasError ? styles.success : "",
-                hasError ? styles.error : ''
+                isComplete && !hasError ? styles.success : '',
+                hasError ? styles.error : ""
             )}
             onClick={() => setStep(index)}
-            ref={ref}
         />
     );
 };

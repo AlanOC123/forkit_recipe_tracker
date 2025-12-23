@@ -1,105 +1,60 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import Context from "./Context";
 import { useAuth } from "../../../../../shared/hooks";
-import { getRegistrationSteps } from "../constants";
+import {
+    getRegistrationSteps,
+    getInitialInputState,
+    getCurrStepCount,
+    getValidationRules
+} from "../constants";
 
 const Provider = ({ children }) => {
     const { submitRegisterUserRequest } = useAuth();
 
     const REGISTRATION_STEPS = getRegistrationSteps();
+    const VALIDATION_RULES = getValidationRules();
+
+    const MAX_STEP_COUNT = getCurrStepCount();
+    const INITIAL_INPUT_STATE = getInitialInputState();
 
     const [currStepIndex, setCurrStepIndex] = useState(0);
-    const [canSubmit, setCanSubmit] = useState(false);
-
-    const [inputValues, setInputValues] = useState({
-        fName: "",
-        lName: "",
-        email: "",
-        confEmail: "",
-        password: "",
-        confPassword: "",
-    });
-
-    const [inputErrorMsg, setInputErrorMsg] = useState({
-        fName: "",
-        lName: "",
-        email: "",
-        confEmail: "",
-        password: "",
-        confPassword: "",
-    });
-
-    const [hasInputError, setHasInputError] = useState({
-        fName: false,
-        lName: false,
-        email: false,
-        confEmail: false,
-        password: false,
-        confPassword: false,
-    });
-
-
-    const [isInputValid, setIsInputValid ] = useState({
-        fName: false,
-        lName: false,
-        email: false,
-        confEmail: false,
-        confPassword: false
-    });
-
-    const inputRefs = {
-        fName: useRef(),
-        lName: useRef(),
-        email: useRef(),
-        confEmail: useRef(),
-        password: useRef(),
-        confPassword: useRef(),
-    };
+    const [inputState, setInputState] = useState(INITIAL_INPUT_STATE);
+    const [isTouched, setIsTouched] = useState({});
 
     const sectionRefs = {
         personalSection: useRef(),
         emailSection: useRef(),
         passwordSection: useRef(),
-    };
-
-    const [isSectionComplete, setIsSectionComplete] = useState({
-        personalSection: false,
-        emailSection: false,
-        passwordSection: false,
-    });
-
-    const [hasSectionError, setHasSectionError] = useState({
-        personalSection: false,
-        emailSection: false,
-        passwordSection: false,
-    });
-
-    const updateInputValues = (field, value) => {
-        setInputValues((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const updateInputErrorMsg = (field, value) => {
-        setInputErrorMsg((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const updateHasInputError = (field, value) => {
-        setHasInputError((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const updateIsInputValid = (field, value) => {
-        setIsInputValid((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const updateIsSectionComplete = (field, value) => {
-        setIsSectionComplete((prev) => ({ ...prev, [field]: value }))
     }
 
-    const updateHasSectionError = (field, value) => {
-        setHasSectionError((prev) => ({ ...prev, [field]: value }))
-    }
+    const stepStatus = REGISTRATION_STEPS.reduce((acc, step) => {
+        const { fields, id } = step;
+
+        const isComplete = fields.every(key => {
+            const rule = VALIDATION_RULES[key];
+            return rule ? rule(inputState[key], inputState) : true
+        })
+
+        const hasError = !isComplete && fields.some(key => isTouched[key]);
+
+        acc[id] = { isComplete, hasError };
+
+        return acc
+    }, {});
+
+    const canSubmit = REGISTRATION_STEPS.every(step => {
+        const { id } = step;
+        const { isComplete } = stepStatus[id];
+        return isComplete
+    })
+
+    const updateInputState = (field, newVal) => {
+        setInputState((prev) => ({ ...prev, [field]: newVal }));
+        setIsTouched((prev) => ({ ...prev, [field]: true }));
+    };
 
     const nextStep = () => {
-        setCurrStepIndex((prev) => Math.min(prev + 1, REGISTRATION_STEPS.length - 1));
+        setCurrStepIndex((prev) => Math.min(prev + 1, MAX_STEP_COUNT - 1));
     };
 
     const previousStep = () => {
@@ -107,11 +62,11 @@ const Provider = ({ children }) => {
     };
 
     const setStep = (index) => {
-        setCurrStepIndex(Math.min(REGISTRATION_STEPS.length - 1, Math.max(index, 0)));
-    }
+        setCurrStepIndex(Math.min(MAX_STEP_COUNT - 1, Math.max(index, 0)));
+    };
 
     const submitUserData = () => {
-        console.log(inputValues);
+        console.log(values);
     };
 
     return (
@@ -119,20 +74,12 @@ const Provider = ({ children }) => {
             value={{
                 currStepIndex,
                 canSubmit,
-                inputValues,
-                inputErrorMsg,
-                hasInputError,
-                isInputValid,
-                inputRefs,
-                isSectionComplete,
-                hasSectionError,
+                inputState,
+                isTouched,
+                stepStatus,
                 sectionRefs,
-                updateInputValues,
-                updateInputErrorMsg,
-                updateHasInputError,
-                updateIsInputValid,
-                updateIsSectionComplete,
-                updateHasSectionError,
+                canSubmit,
+                updateInputState,
                 nextStep,
                 previousStep,
                 setStep,
