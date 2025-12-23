@@ -1,0 +1,7 @@
+.authCard {
+    width: clamp(300px, 40dvw, 500px);
+}
+
+.authBtn {
+    max-width: 100%;
+}

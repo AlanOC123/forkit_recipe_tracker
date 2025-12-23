@@ -1,6 +1,5 @@
-import langinPageHero from "../assets/landingPageTwo.jpg";
-import logo from "../../../../assets/logo.png";
-import { GridSection, GridItem, Button } from "../../../../shared/components";
+import heroImg from "../assets/hero.jpg";
+import { GridSection, GridItem, Button, Logo } from "../../../../shared/components";
 import { cn } from "../../../../shared/utils";
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
@@ -8,7 +7,7 @@ import { Link } from "react-router-dom";
 const HeroLogo = () => {
     return (
         <div className={cn(styles.logoContainer)}>
-            <img src={logo} alt="Forkit Logo" />
+            <Logo />
         </div>
     );
 };
@@ -69,7 +68,7 @@ const HeroImage = () => {
         <GridItem colSpan="full" className={cn(styles.heroImgContainer)}>
             <img
                 className={cn("w-full h-full object-center object-cover")}
-                src={langinPageHero}
+                src={heroImg}
             />
         </GridItem>
     );

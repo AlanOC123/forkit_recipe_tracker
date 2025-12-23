@@ -10,7 +10,6 @@ export const refreshAccessToken = async () => {
     const { getTokens } = tokensService;
     const url = `${import.meta.env.VITE_API_BASE_URL}/api/token/refresh/`;
     const { REFRESH } = getTokens();
-    console.log(REFRESH);
 
     const res = await fetch(url, initFetch(REFRESH));
     const data = await res.json();

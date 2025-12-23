@@ -13,19 +13,19 @@ const postRegisterRequest = async (userData) => {
     const { data } = await interfaceService.post(ENDPOINTS.REGISTER, userData);
     const { user, tokens, message } = data;
     const { access, refresh } = tokens;
-    const { id, username, email } = user;
+    const { id } = user;
 
     setTokens(access, refresh);
 
-    return { id, username, email, message };
+    return { id, message };
 };
 
 const postLoginRequest = async (userData) => {
     const { data } = await interfaceService.post(ENDPOINTS.LOGIN, userData);
-    const { access, refresh, username, email, user_id } = data;
+    const { access, refresh, id } = data;
 
     setTokens(access, refresh);
-    return { id: user_id, username, email };
+    return { id };
 };
 
 export const logoutUser = () => clearTokens();

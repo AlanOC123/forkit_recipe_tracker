@@ -1,13 +1,11 @@
 import {
     GridSection,
     GridItem,
-    Carousel,
     Button,
 } from "../../../../shared/components";
 import { cn } from "../../../../shared/utils";
 import styles from "./styles.module.css";
-import { useState, useEffect, cloneElement } from "react";
-import { useLandingPage } from "../../../../shared/hooks";
+import useLandingPage from '../useLandingPage';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -64,7 +62,6 @@ const FeatureButton = ({ item, index }) => {
     const { cardHeader, cardIcon, cardColor } = item;
     const { setCurrFeatureIndex, currFeatureIndex } = useLandingPage();
     const isActive = currFeatureIndex === index;
-    console.log(isActive);
 
     return (
         <Button

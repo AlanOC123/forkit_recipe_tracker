@@ -1,0 +1,26 @@
+.input {
+    transition: background-color 300ms ease-in-out, border 300ms ease-in-out, box-shadow 300ms ease-in-out;
+    border: 1px solid transparent;
+    background-color: color-mix(in oklab, var(--color-neutral-100), transparent 20%);
+    outline: none;
+    backdrop-filter: blur(4px);
+    width: 100%;
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--color-accent-500), transparent 80%);
+    }
+
+    &:focus-within {
+        border-color: color-mix(in srgb, var(--color-accent-500), transparent 5%);
+    }
+
+    &.success {
+        border-color: color-mix(in srgb, var(--color-success-500), transparent 5%);
+        color: var(--color-success-700);
+    }
+
+    &.error {
+        border-color: color-mix(in srgb, var(--color-destructive-500), transparent 5%);
+        color: var(--color-destructive-700);
+    }
+}

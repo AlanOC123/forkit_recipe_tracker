@@ -10,7 +10,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config) => {
         const { ACCESS } = getTokens();
-        if (ACCESS) config.headers.Authorization = `Bearer: ${ACCESS}`;
+        if (ACCESS) config.headers.Authorization = `Bearer ${ACCESS}`;
         return config;
     },
     (error) => {
@@ -23,19 +23,30 @@ instance.interceptors.response.use(
         return response
     },
     async (error) => {
-        if (error.response?.status !== 401) { return Promise.reject(error) }
+        const originalConfig = error.config;
 
-        const { REFRESH } = getTokens();
+        if (error.response?.status === 401 && !originalConfig.retry) { 
+            originalConfig._retry = false
 
-        if (!isTokenUseable(REFRESH)) {
-            clearTokens();
-            return Promise.reject(error)
+            try {
+                const { REFRESH } = getTokens();
+
+                if (!isTokenUseable(REFRESH)) {
+                    clearTokens();
+                    return Promise.reject(error);
+                }
+
+                const newAccessToken = await refreshAccessToken();
+                setTokens(newAccessToken, REFRESH);
+
+                return instance(originalConfig);
+            } catch (refreshError) {
+                clearTokens()
+                return Promise.reject(refreshError)
+            }
         }
 
-        const newAccessToken = await refreshAccessToken();
-        setTokens(newAccessToken, REFRESH);
-
-        return instance(error.config);
+        return Promise.reject(error);
     }
 )
 

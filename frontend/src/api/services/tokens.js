@@ -35,7 +35,6 @@ export const isTokenUseable = (token) => {
     try {
         if (!token) return false;
         const { exp } = jwtDecode(token);
-        console.log(exp)
         return exp >= (Date.now() / 1000) + 1;
     } catch (err) {
         console.error(err);

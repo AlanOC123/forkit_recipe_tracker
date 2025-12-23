@@ -1,4 +1,8 @@
-import { faCompass, faCodeBranch, faAnglesUp } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCompass,
+    faCodeBranch,
+    faAnglesUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const FEATURE_CARDS_DATA = [
     {

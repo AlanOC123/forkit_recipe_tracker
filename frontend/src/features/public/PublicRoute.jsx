@@ -7,7 +7,7 @@ const PublicRoute = () => {
     if (isLoading) return null;
 
     if (user) {
-        return <Navigate to={"/home"} replace />
+        return <Navigate to={"/dashboard"} replace />
     }
 
     return <Outlet />;

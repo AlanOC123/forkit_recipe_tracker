@@ -1,8 +1,8 @@
 const ENDPOINTS = Object.freeze({
     AUTH: {
-        REGISTER: '/api/register',
-        LOGIN: '/api/login',
-        CURRENT_USER: '/api/me'
+        REGISTER: '/api/register/',
+        LOGIN: '/api/token/',
+        CURRENT_USER: '/api/me/'
     }
 })
 

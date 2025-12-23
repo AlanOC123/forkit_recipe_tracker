@@ -17,18 +17,19 @@ const Provider = ({ children }) => {
         const { id } = await postRegisterRequest(userData);
 
         if (id) {
-            updateUser();
+            await updateUser();
         }
     };
 
     const submitLogin = async (credentials) => {
         const { postLoginRequest } = authService;
-        const { id } = await postLoginRequest(credentials);
-        console.log(id);
+        const data = await postLoginRequest(credentials);
 
-        if (id) {
-            updateUser();
+        if (data.id) {
+            await updateUser();
         }
+
+        return data;
     };
 
     const submitLogout = () => {

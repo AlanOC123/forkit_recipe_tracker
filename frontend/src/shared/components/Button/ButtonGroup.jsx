@@ -17,7 +17,7 @@ const buttonGroupVariants = cva(
     }
 );
 
-export const ButtonGroup = forwardRef(({ className, orientation, children, props  }, ref) => {
+export const ButtonGroup = forwardRef(({ className, orientation, children, props }, ref) => {
     return (
         <div
             ref={ref}

@@ -1,5 +1,14 @@
 import { cn } from "../../../../shared/utils";
 import styles from "./styles.module.css";
+import { Button } from "../../../../shared/components";
+
+const AuthCardBtn = ({ children, ...props }) => {
+    return (
+        <Button className={cn(styles.authBtn)} {...props}>
+            {children}
+        </Button>
+    );
+};
 
 const AuthCardHeader = ({ children }) => {
     return (
@@ -15,22 +24,37 @@ const AuthCardHeader = ({ children }) => {
 };
 
 const AuthCardInputs = ({ children }) => {
-    return <div className={styles.authCardInputs}>{children}</div>;
+    return (
+        <div className={cn(styles.authCardInputs, "grid gap-4")}>
+            {children}
+        </div>
+    );
 };
 
-const AuthCardAdditionalInputs = ({ children }) => {
-    return <div className={styles.authCardAdditionalInputs}>{children}</div>;
+const AuthCardAdditionalInputs = ({ children, className }) => {
+    return (
+        <div className={cn(styles.authCardAdditionalInputs, className)}>{children}</div>
+    );
 };
 
 const AuthCardControls = ({ children }) => {
-    return <div className={cn(styles.authCardControls, "grid gap-2")}>{children}</div>;
+    return (
+        <div className={cn(styles.authCardControls, "grid gap-2")}>
+            {children}
+        </div>
+    );
 };
 
 export const AuthCard = ({ children }) => {
-    return <article className={cn(styles.authCard, "grid gap-4")}>{children}</article>;
+    return (
+        <article className={cn(styles.authCard, "grid gap-12")}>
+            {children}
+        </article>
+    );
 };
 
 AuthCard.Header = AuthCardHeader;
 AuthCard.Inputs = AuthCardInputs;
 AuthCard.AdditionalInputs = AuthCardAdditionalInputs;
 AuthCard.Controls = AuthCardControls;
+AuthCard.ControlBtn = AuthCardBtn;

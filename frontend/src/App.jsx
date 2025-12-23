@@ -1,6 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import { AuthContext } from './shared/context';
-import { LandingPage, ProtectedRoute, PublicRoute, Login, Register } from "./features";
+import { AuthContext } from "./shared/context";
+import {
+    LandingPage,
+    ProtectedRoute,
+    PublicRoute,
+    Login,
+    Register,
+    Dashboard,
+    Home,
+    Search,
+} from "./features";
 import { ScrollToAnchor } from "./shared/utils";
 
 function App() {
@@ -15,8 +24,10 @@ function App() {
                 </Route>
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/home" element={<h1>Home</h1>} />
-                    <Route path="/profile" element={<h1>Profile</h1>} />
+                    <Route path="/dashboard" element={<Dashboard />}>
+                        <Route path="" element={<Home />} />
+                        <Route path="search" element={<Search />} />
+                    </Route>
                 </Route>
             </Routes>
         </AuthContext.Provider>
