@@ -9,7 +9,7 @@ import {
 } from "../constants";
 
 const Provider = ({ children }) => {
-    const { submitRegisterUserRequest } = useAuth();
+    const { postRegisterRequest } = useAuth();
 
     const REGISTRATION_STEPS = getRegistrationSteps();
     const VALIDATION_RULES = getValidationRules();
@@ -65,8 +65,23 @@ const Provider = ({ children }) => {
         setCurrStepIndex(Math.min(MAX_STEP_COUNT - 1, Math.max(index, 0)));
     };
 
-    const submitUserData = () => {
-        console.log(values);
+    const submitUserData = async () => {
+        if (!canSubmit) return;
+
+        const payload = {
+            "first_name": inputState.fName,
+            "last_name": inputState.lName,
+            "email": inputState.email,
+            "confirm_email": inputState.confEmail,
+            "password": inputState.password,
+            "confirm_password": inputState.confPassword,
+        }
+
+        try {
+            await postRegisterRequest(payload)
+        } catch (err) {
+            console.error("Registration failed", err)
+        }
     };
 
     return (
@@ -78,11 +93,11 @@ const Provider = ({ children }) => {
                 isTouched,
                 stepStatus,
                 sectionRefs,
-                canSubmit,
                 updateInputState,
                 nextStep,
                 previousStep,
                 setStep,
+                submitUserData
             }}
         >
             {children}
