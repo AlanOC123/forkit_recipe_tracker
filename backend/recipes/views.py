@@ -80,11 +80,41 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         public_key = Recipe.StatusChoices.PUBLIC
+        query_set = Recipe.objects.filter(status=public_key)
+
         if self.request.user.is_authenticated:
-            return Recipe.objects.filter(
-                Q(status=public_key) | Q(author=self.request.user.profile)
+            query_set = Recipe.objects.filter(Q(status=public_key) | Q(author=self.request.user.profile)).distinct()
+
+        author_id = self.request.query_params.get("author")
+        if author_id:
+            query_set = query_set.filter(author__id=author_id)
+        
+        course = self.request.query_params.get("course")
+        if course:
+            query_set = query_set.filter(course__iexact=course)
+        
+        cuisine = self.request.query_params.get("cuisine")
+        if cuisine:
+            query_set = query_set.filter(cuisines__cuisine__name__iexact=cuisine)
+        
+        tag = self.request.query_params.get("tag")
+        if tag:
+            query_set = query_set.filter(
+                tags__name__iexact=tag
             )
-        return Recipe.objects.filter(status=public_key)
+        
+        search_term = self.request.query_params.get("term")
+        if search_term:
+            query_set = query_set.filter(
+                title__icontains=search_term
+            )
+        
+        ordering = self.request.query_params.get('ordering')
+        if ordering == "fork_count":
+            query_set = query_set.order_by('-created_at')
+
+        return query_set
+
     
     def get_serializer_class(self):
         if self.action == 'list':

@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'cloudinary_storage',
+    'cloudinary',
 
     # Core Apps
     'profiles.apps.ProfilesConfig',
@@ -33,7 +35,7 @@ INSTALLED_APPS = [
 HOST_ADDRESSES = config('ALLOWED_HOSTS')
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-FRONTEND_URL = 'http://localhost:3000'
+FRONTEND_URL = 'http://localhost:5173'
 DEFAULT_FROM_EMAIL = 'noreply@forkit.com'
 
 if isinstance(HOST_ADDRESSES, str):
@@ -97,15 +99,6 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # *** Database ***
 USE_POSTGRES = config(
     'USE_POSTGRES', default=True, cast=bool
@@ -160,3 +153,24 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
+# Content
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+USE_LOCAL_STORAGE = config('USE_LOCAL', default=False, cast=bool)
+if USE_LOCAL_STORAGE:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+else:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config('CLOUD_NAME'),
+        'API_KEY': config('API_KEY'),
+        'API_SECRET': config('API_SECRET')
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

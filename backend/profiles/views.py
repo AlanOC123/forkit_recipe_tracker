@@ -8,11 +8,13 @@ from rest_framework.mixins import (
 )
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
-from .models import UserProfile, UserCuisine, UserAllergy, UserTechnique
+from .models import UserProfile, UserCuisine, UserAllergy, UserTechnique, SeverityChoices
+from shared.models import Allergen
 from .serializers import (
     UserProfileSerializer, UserAllergyListSerializer, UserCuisineListSerializer, UserTechniqueListSerializer, UserAllergyDetailSerializer, UserCuisineDetailSerializer, UserTechniqueDetailSerializer, CustomTokenObtainPairSerializer,
     UserRegistrationSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 )
+from shared.serializers import AllergenSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -54,10 +56,32 @@ class CurrentUserView(APIView):
 
     def get(self, request):
         user = request.user
+        profile= user.profile
+        serializer = UserProfileSerializer(profile)
+        profile_data = dict(serializer.data)
+
         return Response({
+            **profile_data,
             "id": user.id,
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+        })
+
+class UserRegistrationOptionsView(APIView):
+    permission_classes =[AllowAny]
+
+    def get(self, request):
+        allergens = Allergen.objects.all()
+        allergen_data = AllergenSerializer(allergens, many=True).data
+
+        severity_options = [
+            {"value": key, "label": label}
+            for key, label in SeverityChoices.choices
+        ]
+
+        return Response({
+            "allergens": allergen_data,
+            "severity_options": severity_options 
         })
 
 class UserRegistrationView(APIView):

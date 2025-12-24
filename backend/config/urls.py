@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
@@ -7,6 +9,7 @@ from rest_framework_simplejwt.views import (
 from profiles.views import (
     CustomTokenObtainPairView,
     UserRegistrationView,
+    UserRegistrationOptionsView,
     PasswordRequestView,
     PasswordConfirmView,
     CurrentUserView
@@ -28,6 +31,7 @@ urlpatterns = [
 
     # Register
     path('api/register/', UserRegistrationView.as_view(), name='user_register'),
+    path('api/register/options/', UserRegistrationOptionsView.as_view(), name='user_registration_options'),
 
     # Current User
     path('api/me/', CurrentUserView.as_view(), name="current-user"),
@@ -36,3 +40,6 @@ urlpatterns = [
     path('api/password-reset/', PasswordRequestView.as_view(), name="password_reset"),
     path('api/password-reset/confirm/', PasswordConfirmView.as_view(), name="password_reset_confirm"),
 ]
+
+if settings.DEBUG and settings.USE_LOCAL_STORAGE:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

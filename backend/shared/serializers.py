@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Allergen, Cuisine, Technique, Tag, Level
+from profiles.models import SeverityChoices
 
 class AllergenSerializer(serializers.ModelSerializer):
     class Meta:

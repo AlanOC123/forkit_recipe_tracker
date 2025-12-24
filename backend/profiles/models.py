@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from shared.models import Allergen, Cuisine, Technique, Level
 
+class SeverityChoices(models.TextChoices):
+    MILD = "mild", "Mild"
+    MODERATE = "moderate", "Moderate"
+    SEVERE = "severe", "Severe"
+    ANAPHYLAXIS = "anaphylaxis", "Anaphylaxis"
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         verbose_name="User Profile",
@@ -34,7 +40,7 @@ class UserProfile(models.Model):
         verbose_name="User Avatar",
         upload_to='avatars/',
         null=True,
-        blank=True
+        blank=True,
     )
 
     location = models.CharField(
@@ -77,12 +83,6 @@ class UserProfile(models.Model):
         return f"User Profile for {self.user.username}"
 
 class UserAllergy(models.Model):
-    class SeverityChoices(models.TextChoices):
-        MILD = "mild", "Mild"
-        MODERATE = "moderate", "Moderate"
-        SEVERE = "severe", "Severe"
-        ANAPHYLAXIS = "anaphylaxis", "Anaphylaxis"
-    
     user_profile = models.ForeignKey(
         to=UserProfile,
         on_delete=models.CASCADE,

@@ -126,24 +126,33 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-            "username": self.user.username,
-            "firstName": self.user.profile.first_name or "User",
-            "lastName": self.user.profile.last_name or "Name",
+            "id": self.user.pk,
         }
 
         return data
+
+class AllergyPayloadSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    severity = serializers.CharField()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(write_only=True, max_length=50)
     last_name = serializers.CharField(write_only=True, max_length=50)
     password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
+    email = serializers.CharField(write_only=True)
+    confirm_email = serializers.CharField(write_only=True)
+    allergy_ids = AllergyPayloadSerializer(
+        many=True,
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model=User
         fields = [
-            'username', 'email', 'password', 
-            'first_name', 'last_name', 'confirm_password'
+            'username', 'email', 'confirm_email', 'password', 
+            'first_name', 'last_name', 'confirm_password', 'allergy_ids'
         ]
 
         read_only_fields = ['username']
@@ -152,6 +161,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError({
                 "confirm_password": "Passwords dont match"
+            })
+        
+        if data['email'] != data['confirm_email']:
+            raise serializers.ValidationError({
+                'confirm_email': "Emails dont match"
             })
 
         return data
@@ -162,10 +176,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("User already registered")
+
         return value
 
     def create(self, validated_data):
         validated_data.pop('confirm_password')
+        validated_data.pop('confirm_email')
+        allergy_ids = validated_data.pop('allergy_ids', [])
+
         first_name = validated_data.pop('first_name')
         last_name = validated_data.pop('last_name')
 
@@ -181,6 +199,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         profile.first_name = first_name
         profile.last_name = last_name
         profile.save()
+
+        print(validated_data)
+
+        if allergy_ids:
+            allergy_records = [
+                UserAllergy(
+                    user_profile=profile,
+                    allergen_id=int(a.get("id")),
+                    severity=a.get("severity")
+                ) for a in allergy_ids
+            ]
+
+            UserAllergy.objects.bulk_create(allergy_records)
+
+            print(user.profile.allergies)
 
         return user
 
@@ -265,13 +298,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
     cuisines = UserCuisineListSerializer(read_only=True, many=True)
     techniques = UserTechniqueListSerializer(read_only=True, many=True)
     allergies = UserAllergyListSerializer(read_only=True, many=True)
+    avatar_url = serializers.ReadOnlyField(source="get_avatar")
 
     class Meta:
         model = UserProfile
         fields = [
-            'id', 'username', 'bio', 'avatar', 'location', 'website', 'email',
-            'cuisines', 'techniques', 'allergies',
-            'created_at', 'updated_at'
+            'id', 'username', 'bio', 'location', 'website', 'email',
+            'cuisines', 'techniques', 'allergies', 'avatar_url',
+            'created_at', 'updated_at', 'first_name', 'last_name'
         ]
 
         read_only_fields = [

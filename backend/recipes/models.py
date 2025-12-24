@@ -162,7 +162,7 @@ class Step(models.Model):
         ]
     
     def __str__(self):
-        return f"({self.recipe.title}) - Step {(self.order if self.order else "X")}"
+        return f"({self.recipe.title}) - Step {(self.order if self.order else 'X')}"
 
 class Ingredient(models.Model):
     recipe = models.ForeignKey(
