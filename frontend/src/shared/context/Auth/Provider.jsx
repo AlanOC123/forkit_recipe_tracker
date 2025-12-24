@@ -15,6 +15,7 @@ const Provider = ({ children }) => {
     const submitRegister = async (userData) => {
         const { postRegisterRequest } = authService;
         const { id } = await postRegisterRequest(userData);
+        console.log(id);
 
         if (id) {
             await updateUser();

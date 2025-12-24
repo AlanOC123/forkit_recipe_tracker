@@ -6,8 +6,8 @@ import {
     GridItem,
 } from "../../../../shared/components";
 import { getRegistrationSteps } from "./constants";
-import { DataEntry, Controls, StageSelector } from "./components";
-import useRegister from "./useRegister";
+import { DataEntry, Controls, StageSelector, AlertGroup } from "./components";
+import { useRegister } from "./hooks";
 import { PageHeader, AuthCard } from "../../auth/components";
 
 const ALL_STEPS = getRegistrationSteps();

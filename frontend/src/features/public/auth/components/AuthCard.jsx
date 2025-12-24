@@ -23,9 +23,9 @@ const AuthCardHeader = ({ children }) => {
     );
 };
 
-const AuthCardInputs = ({ children }) => {
+const AuthCardInputs = ({ children, className }) => {
     return (
-        <div className={cn(styles.authCardInputs, "grid gap-4")}>
+        <div className={cn(styles.authCardInputs, "grid gap-4", className)}>
             {children}
         </div>
     );

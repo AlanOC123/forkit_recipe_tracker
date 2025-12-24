@@ -41,3 +41,47 @@
     width: 40px;
     height: 40px;
 }
+
+.allergenGroup {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.allergyIncrementBtn {
+    &.noAllergy {
+        font-weight: var(--font-weight-light);
+        background-color: color-mix(in oklab, var(--color-neutral-100), transparent 40%);
+        color: var(--color-neutral-500);
+        border: 1px solid var(--color-neutral-200);
+    }
+}
+
+.mildAllergy {
+    font-weight: var(--font-weight-normal);
+    background-color: color-mix(in oklab, var(--color-success-100) 75%, var(--color-warning-100));
+    color: var(--color-success-950);
+    border: 1px solid var(--color-success-200);
+}
+
+.moderateAllergy {
+    font-weight: var(--font-weight-normal);
+    background-color: color-mix(in oklab, var(--color-success-100) 25%, var(--color-warning-100));
+    color: var(--color-warning-950);
+    border: 1px solid var(--color-warning-200);
+}
+
+.severeAllergy {
+    font-weight: var(--font-weight-normal);
+    background-color: color-mix(in oklab, var(--color-destructive-100) 25%, var(--color-warning-100));
+    color: var(--color-destructive-950);
+    border: 1px solid var(--color-destructive-200);
+}
+
+.anaphylaxisAllergy {
+    font-weight: var(--font-weight-extrabold);
+    background-color: var(--color-destructive-200);
+    color: var(--color-destructive-950);
+    border: 1px solid var(--color-destructive-500);
+}

@@ -1,4 +1,4 @@
-import useRegister from "../useRegister";
+import { useRegister } from "../hooks";
 import styles from "./styles.module.css";
 import { cn } from "../../../../../shared/utils";
 import { Button } from "../../../../../shared/components";
@@ -24,7 +24,6 @@ const StageSelectorButton = ({ stageKey, index }) => {
     const {
         currStepIndex,
         stepStatus,
-        sectionRefs,
         setStep
     } = useRegister();
 
