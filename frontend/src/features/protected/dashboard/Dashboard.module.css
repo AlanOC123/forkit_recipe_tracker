@@ -1,0 +1,8 @@
+.dashboard {
+    position: relative;
+    height: 100dvh;
+    width: 100dvw;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding-inline: 4px;
+}

@@ -1,15 +1,18 @@
-import styles from "./Dashboard.module.css"
-import { HeaderSection, MainSection } from './components';
-import { Provider } from './context'
+import styles from "./Dashboard.module.css";
+import { HeaderSection, MainSection } from "./components";
+import { Provider as DashboardProvider } from "./context";
+import { Provider as SearchProvider } from "./search/context";
 import { Route } from "react-router-dom";
 
 export const Dashboard = () => {
     return (
-        <Provider>
-            <div id="dashboard" className={styles.dashboard}>
-                <HeaderSection />
-                <MainSection />
-            </div>
-        </Provider>
+        <DashboardProvider>
+            <SearchProvider>
+                <div id="dashboard" className={styles.dashboard}>
+                    <HeaderSection />
+                    <MainSection />
+                </div>
+            </SearchProvider>
+        </DashboardProvider>
     );
-}
+};

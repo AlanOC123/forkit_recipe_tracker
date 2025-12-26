@@ -1,3 +1,7 @@
+import { getBaseURL } from "../../api/constants";
+
+const BASE_URL = getBaseURL();
+
 const getImage = (path) => {
     if (!path) return;
 
@@ -5,7 +9,7 @@ const getImage = (path) => {
         return path
     }
 
-    const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\$/, "");
+    const baseUrl = BASE_URL?.replace(/\$/, "");
     const cleanPath = path.startsWith('/') ? path : `/${path}`;
 
     return `${baseUrl}${cleanPath}`

@@ -4,3 +4,4 @@ export * from './Carousel';
 export * from './Input';
 export * from './Logo';
 export * from './Alert';
+export * from './Icon';

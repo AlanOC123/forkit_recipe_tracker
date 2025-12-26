@@ -1,3 +1,5 @@
 export { Dashboard } from './Dashboard';
 export { Home } from './home';
-export { Search } from './search';
+export { Courses } from './courses';
+export { Cuisines } from './cuisines';
+export { Cookbook } from './cookbook';

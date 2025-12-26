@@ -8,7 +8,9 @@ import {
     Register,
     Dashboard,
     Home,
-    Search,
+    Courses,
+    Cuisines,
+    Cookbook
 } from "./features";
 import { ScrollToAnchor } from "./shared/utils";
 
@@ -26,7 +28,9 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route path="/dashboard" element={<Dashboard />}>
                         <Route path="" element={<Home />} />
-                        <Route path="search" element={<Search />} />
+                        <Route path="courses" element={<Courses />} />
+                        <Route path="cuisines" element={<Cuisines />} />
+                        <Route path="cookbook" element={<Cookbook />} />
                     </Route>
                 </Route>
             </Routes>

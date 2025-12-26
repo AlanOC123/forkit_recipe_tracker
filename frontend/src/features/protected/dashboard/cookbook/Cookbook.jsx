@@ -1,5 +1,5 @@
 import { GridContainer } from "../../../../shared/components";
 
-export const Search = () => {
+export const Cookbook = () => {
     return <GridContainer></GridContainer>;
-};
+}
